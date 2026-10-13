@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Counter & Activity Log</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f5f7ff;
+            color: #1a1a2e;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 4px 16px rgba(26, 86, 219, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2 { color: #1a56db; margin-bottom: 15px; font-size: 1.8rem; }
+        #count { font-weight: bold; color: #7c3aed; }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        button {
+            background: #1a56db;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        button:hover { background: #1446b5; }
+        button.reset-btn { background: #dc2626; }
+        button.reset-btn:hover { background: #b91c1c; }
+        #statusMessage {
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .log-container {
+            text-align: left;
+            background: #f0f4ff;
+            padding: 12px;
+            border-radius: 8px;
+            max-height: 150px;
+            overflow-y: auto;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Counter: <span id="count">0</span></h2>
+        <p id="statusMessage">Status: Initialized</p>
+        
+        <div class="btn-group">
+            <button onclick="change(1)">+ Add</button>
+            <button onclick="change(-1)">- Subtract</button>
+            <button class="reset-btn" onclick="resetCounter()">Reset</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Action History Log</h2>
+        <div id="logList" class="log-container">
+            <!-- Loop output rendered here -->
+        </div>
+        <button onclick="clearLogs()" style="margin-top: 15px; background: #4b5563;">Clear Log</button>
+    </div>
+
+    <script>
+        // Initialize variables with let and const
+        const MAX_LIMIT = 20;
+        const MIN_LIMIT = -20;
+        let count = 0;
+        let actionHistory = [];
+
+        // Load saved state from localStorage on page startup
+        window.onload = function() {
+            let savedCount = localStorage.getItem('app_count');
+            let savedLog = localStorage.getItem('app_history');
+
+            if (savedCount !== null) {
+                count = Number(savedCount);
+            }
+            if (savedLog !== null) {
+                actionHistory = JSON.parse(savedLog);
+            }
+            updateDisplay();
+            console.log("Application state successfully loaded from localStorage."); //[cite: 11, 13]
+        };
+
+        function change(amount) {
+            // Conditional evaluation (if / else if / else)
+            if (count + amount > MAX_LIMIT) {
+                alert("Warning: Maximum limit of " + MAX_LIMIT + " reached!"); //
+                return;
+            } else if (count + amount < MIN_LIMIT) {
+                alert("Warning: Minimum limit of " + MIN_LIMIT + " reached!"); //[cite: 11]
+                return;
+            }
+
+            count = count + amount; //
+            
+            // Record action in array
+            actionHistory.push("Modified counter by " + (amount > 0 ? "+" + amount : amount));
+            
+            saveAndRefresh();
+        }
+
+        function resetCounter() {
+            count = 0; //[cite: 13]
+            actionHistory.push("Reset counter to 0");
+            saveAndRefresh();
+        }
+
+        function clearLogs() {
+            actionHistory = [];
+            localStorage.removeItem('app_history'); //[cite: 13]
+            updateDisplay();
+        }
+
+        function saveAndRefresh() {
+            // Save state persistently using localStorage[cite: 13]
+            localStorage.setItem('app_count', count);
+            localStorage.setItem('app_history', JSON.stringify(actionHistory));
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            // Get element by ID and modify DOM[cite: 11]
+            let countEl = document.getElementById('count');
+            let statusEl = document.getElementById('statusMessage');
+            let logEl = document.getElementById('logList');
+
+            countEl.textContent = count;
+
+            // Conditional styling and messaging based on current value[cite: 11, 12]
+            if (count > 10) {
+                countEl.style.color = '#16a34a'; // Green for high values
+                statusEl.textContent = 'Status: High Range';
+                statusEl.style.color = '#16a34a';
+                statusEl.style.background = '#dcfce7';
+            } else if (count < 0) {
+                countEl.style.color = '#dc2626'; // Red for negative values
+                statusEl.textContent = 'Status: Negative Range';
+                statusEl.style.color = '#dc2626';
+                statusEl.style.background = '#fee2e2';
+            } else {
+                countEl.style.color = '#7c3aed'; // Purple for normal range
+                statusEl.textContent = 'Status: Normal Range';
+                statusEl.style.color = '#1a56db';
+                statusEl.style.background = '#e0e7ff';
+            }
+
+            // Render action history using a for...of loop
+            let logHTML = '';
+            for (let entry of actionHistory) {
+                logHTML += '<div>• ' + entry + '</div>';
+            }
+            logEl.innerHTML = logHTML || '<i>No actions recorded yet.</i>';
+        }
+    </script>
+</body>
+</html>
