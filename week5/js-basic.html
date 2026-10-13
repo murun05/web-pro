@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Basics - Comprehensive Guide</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: #f8fafc;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+        header {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
+        }
+        header h1 { font-size: 2rem; margin-bottom: 8px; font-weight: 700; }
+        header p { color: #e2e8f0; font-size: 0.95rem; opacity: 0.9; }
+
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .card:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+        h2 { 
+            color: #38bdf8; 
+            font-size: 1.15rem; 
+            margin-bottom: 12px; 
+            border-bottom: 2px solid rgba(56, 189, 248, 0.2); 
+            padding-bottom: 8px; 
+            font-weight: 600;
+        }
+        p { margin-bottom: 14px; font-size: 14px; color: #94a3b8; line-height: 1.5; }
+        
+        input {
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #f8fafc;
+            padding: 10px 14px;
+            font-size: 14px;
+            border-radius: 8px;
+            margin-right: 8px;
+            margin-bottom: 10px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: #38bdf8; }
+
+        button {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            transition: transform 0.1s, opacity 0.2s;
+        }
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+        button:active { transform: translateY(0); }
+
+        .btn-green { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+        .btn-red { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); }
+
+        .output-box {
+            background: #0b0f19;
+            border-left: 4px solid #38bdf8;
+            border-radius: 0 8px 8px 0;
+            padding: 12px 16px;
+            margin-top: 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            color: #e2e8f0;
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>JavaScript Fundamentals</h1>
+            <p>Interactive reference guide covering variables, DOM manipulation, conditions, loops, and localStorage</p>
+        </header>
+
+        <!-- SECTION 1: Variables & Output -->
+        <div class="card">
+            <h2>1. Variables & Output — let, const, console.log, alert</h2>
+            <p>Demonstrates modern variable declaration and popup interactions.</p>
+            <button onclick="runVariablesDemo()">Run Variable Demo</button>
+            <div id="varOutput" class="output-box">Click the button to test variables and check F12 Console.</div>
+        </div>
+
+        <!-- SECTION 2: DOM Manipulation -->
+        <div class="card">
+            <h2>2. DOM Manipulation — getElementById, Styles, Text Content</h2>
+            <p id="targetText">This is the original text element waiting to be modified.</p>
+            <button onclick="changeDomElement()">Change Text & Style</button>
+        </div>
+
+        <!-- SECTION 3: Conditions -->
+        <div class="card">
+            <h2>3. Conditional Grading Evaluator — if / else</h2>
+            <p>Enter a numeric score between 0 and 100 to evaluate letter grades:</p>
+            <input type="number" id="scoreInput" placeholder="Enter score (e.g. 85)">
+            <button onclick="evaluateScore()">Evaluate Grade</button>
+            <div id="gradeResult" class="output-box">Result will appear here...</div>
+        </div>
+
+        <!-- SECTION 4: Loops & Arrays -->
+        <div class="card">
+            <h2>4. Loops & Arrays — for...of loop</h2>
+            <p>Iterates through a predefined array of web development technologies.</p>
+            <button onclick="runLoopDemo()">Display Array Items</button>
+            <div id="loopOutput" class="output-box">Click to run loop...</div>
+        </div>
+
+        <!-- SECTION 5: localStorage -->
+        <div class="card">
+            <h2>5. Browser Data Persistence — localStorage</h2>
+            <p>Save user text locally so it persists even after refreshing the page.</p>
+            <input type="text" id="storageInput" placeholder="Type something to save">
+            <button onclick="saveData()">Save Data</button>
+            <button onclick="loadData()" class="btn-green">Load Data</button>
+            <button onclick="clearData()" class="btn-red">Delete Data</button>
+            <div id="storageOutput" class="output-box">Storage status...</div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Variables and Output ---
+        function runVariablesDemo() {
+            let studentName = "Murun"; 
+            const ID = "202539440";   
+            
+            console.log("Student Name: " + studentName);
+            console.log("Student ID: " + ID);
+            
+            alert("Hello, " + studentName + "! Check your F12 Console for details.");
+            document.getElementById('varOutput').textContent = "Success! let studentName = '" + studentName + "',  ID = '" + ID + "'. Check Console (F12).";
+        }
+
+        // --- 2. DOM Manipulation ---
+        function changeDomElement() {
+            let el = document.getElementById('targetText');
+            el.textContent = "Success! The text, font weight, and color were dynamically modified using JavaScript.";
+            el.style.color = '#34d399';
+            el.style.fontWeight = 'bold';
+        }
+
+        // --- 3. Conditions (if / else) ---
+        function evaluateScore() {
+            let score = Number(document.getElementById('scoreInput').value);
+            let resultBox = document.getElementById('gradeResult');
+
+            if (score >= 90) {
+                resultBox.textContent = "Score " + score + " = Grade: A (Outstanding!)";
+            } else if (score >= 80) {
+                resultBox.textContent = "Score " + score + " = Grade: B (Great Job!)";
+            } else if (score >= 70) {
+                resultBox.textContent = "Score " + score + " = Grade: C (Passing)";
+            } else {
+                resultBox.textContent = "Score " + score + " = Grade: F (Needs Improvement)";
+            }
+        }
+
+        // --- 4. Loops & Arrays ---
+        function runLoopDemo() {
+            let techStack = ['HTML5 Structure', 'CSS3 Styling', 'JavaScript Logic', 'GitHub Pages Deployment'];
+            let outputText = "Iterating through tech stack array:\n";
+            
+            for (let tech of techStack) {
+                outputText += "• " + tech + "\n";
+            }
+            
+            document.getElementById('loopOutput').textContent = outputText;
+        }
+
+        // --- 5. localStorage ---
+        function saveData() {
+            let valueToSave = document.getElementById('storageInput').value;
+            if (valueToSave.trim() === "") {
+                alert("Please type something first!");
+                return;
+            }
+            localStorage.setItem('user_note', valueToSave);
+            document.getElementById('storageOutput').textContent = "Saved to localStorage: '" + valueToSave + "'";
+        }
+
+        function loadData() {
+            let savedValue = localStorage.getItem('user_note');
+            if (savedValue !== null) {
+                document.getElementById('storageOutput').textContent = "Loaded from localStorage: '" + savedValue + "'";
+            } else {
+                document.getElementById('storageOutput').textContent = "No data found in localStorage yet.";
+            }
+        }
+
+        function clearData() {
+            localStorage.removeItem('user_note');
+            document.getElementById('storageOutput').textContent = "Item successfully removed from localStorage.";
+        }
+    </script>
+</body>
+</html>
