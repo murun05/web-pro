@@ -1,1 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Joke Fetcher</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --accent: #10b981;
+            --error: #ef4444;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #saveBtn {
+            background-color: var(--accent);
+        }
+        #saveBtn:hover {
+            background-color: #059669;
+        }
+
+        .joke-box {
+            margin: 1.5rem 0;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #jokeSetup {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        #jokePunch {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #38bdf8;
+        }
+
+        /* Challenge: Spinner Animation */
+        .spinner {
+            display: none;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 0.8s linear infinite;
+            margin: 1rem auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-msg {
+            color: var(--error);
+            font-weight: 500;
+            margin: 1rem 0;
+        }
+
+        .favourites-section {
+            margin-top: 2rem;
+            text-align: left;
+            border-top: 1px solid #334155;
+            padding-top: 1rem;
+        }
+
+        .favourites-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        #favouritesList {
+            list-style-type: disc;
+            padding-left: 1.2rem;
+            max-height: 150px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        #favouritesList li {
+            margin-bottom: 0.4rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>😂 Random Joke Fetcher</h1>
+        
+        <div class="btn-group">
+            <button id="loadBtn">Load Joke</button>
+            <button id="saveBtn" style="display: none;">Save Favourite ⭐</button>
+        </div>
+
+        <!-- Loading Spinner & Text -->
+        <div id="spinner" class="spinner"></div>
+        <div id="loadingText" style="display: none; color: #94a3b8;">Loading…</div>
+
+        <!-- Error Message -->
+        <div id="errorMsg" class="error-msg" style="display: none;"></div>
+
+        <!-- Joke Display -->
+        <div class="joke-box">
+            <div id="jokeSetup">Click the button to get a joke!</div>
+            <div id="jokePunch"></div>
+        </div>
+
+        <!-- Extra: Saved Favourites -->
+        <div class="favourites-section">
+            <h3>Saved Favourites (<span id="favCount">0</span>)</h3>
+            <ul id="favouritesList"></ul>
+        </div>
+    </div>
+
+    <script>
+        const loadBtn = document.getElementById('loadBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const spinner = document.getElementById('spinner');
+        const loadingText = document.getElementById('loadingText');
+        const errorMsg = document.getElementById('errorMsg');
+        const jokeSetup = document.getElementById('jokeSetup');
+        const jokePunch = document.getElementById('jokePunch');
+        const favouritesList = document.getElementById('favouritesList');
+        const favCount = document.getElementById('favCount');
+
+        let currentJoke = null;
+
+        // Load saved favourites from localStorage on startup
+        document.addEventListener('DOMContentLoaded', displayFavourites);
+
+        loadBtn.addEventListener('click', loadJoke);
+        saveBtn.addEventListener('click', saveFavourite);
+
+        async function loadJoke() {
+            // Reset UI states
+            errorMsg.style.display = 'none';
+            jokeSetup.textContent = '';
+            jokePunch.textContent = '';
+            saveBtn.style.display = 'none';
+            
+            // Show loading indicators
+            spinner.style.display = 'block';
+            loadingText.style.display = 'block';
+            loadBtn.disabled = true;
+
+            try {
+                const res = await fetch('https://official-joke-api.appspot.com/random_joke');
+                
+                // Professional error handling check for non-2xx statuses (like 404/500)
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
+                }
+
+                const data = await res.json();
+                currentJoke = data;
+
+                // Display setup and punchline separately
+                jokeSetup.textContent = data.setup;
+                jokePunch.textContent = data.punchline;
+                
+                // Show save button once joke is successfully loaded
+                saveBtn.style.display = 'inline-block';
+
+            } catch (err) {
+                errorMsg.textContent = 'Oops! Failed to load a joke. Please check your internet connection and try again.';
+                errorMsg.style.display = 'block';
+                console.error('Fetch error:', err);
+            } finally {
+                // Always runs to hide the spinner and re-enable button
+                spinner.style.display = 'none';
+                loadingText.style.display = 'none';
+                loadBtn.disabled = false;
+            }
+        }
+
+        function saveFavourite() {
+            if (!currentJoke) return;
+
+            let favourites = JSON.parse(localStorage.getItem('favouriteJokes')) || [];
+
+            // Prevent exact duplicate saves
+            const exists = favourites.some(j => j.id === currentJoke.id);
+            if (!exists) {
+                favourites.push(currentJoke);
+                localStorage.setItem('favouriteJokes', JSON.stringify(favourites));
+                displayFavourites();
+            } else {
+                alert('This joke is already in your favourites!');
+            }
+        }
+
+        function displayFavourites() {
+            const favourites = JSON.parse(localStorage.getItem('favouriteJokes')) || [];
+            favouritesList.innerHTML = '';
+            favCount.textContent = favourites.length;
+
+            if (favourites.length === 0) {
+                favouritesList.innerHTML = '<li>No saved jokes yet.</li>';
+                return;
+            }
+
+            favourites.forEach(joke => {
+                const li = document.createElement('li');
+                li.textContent = `${joke.setup} — ${joke.punchline}`;
+                favouritesList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
