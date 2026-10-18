@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seoul Weather Dashboard</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at top left, #1e3a8a, #0f172a);
+  margin: 0;
+  padding: 40px 20px;
+  color: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
+  max-width: 500px;
+  width: 100%;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+h1 {
+  color: #38bdf8;
+  font-size: 2.5rem;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+header p {
+  color: #94a3b8;
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.card {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+button {
+  background: linear-gradient(135deg, #0284c7, #0ea5e9);
+  color: white;
+  border: 0;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.4);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+  transform: none;
+}
+
+#status {
+  margin: 15px 0 0 0;
+  min-height: 24px;
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+.weather-header {
+  font-size: 1.4rem;
+  color: #e2e8f0;
+  margin: 15px 0 5px 0;
+  font-weight: 600;
+}
+
+.temp {
+  font-size: 5rem;
+  font-weight: 800;
+  color: #38bdf8;
+  margin: 10px 0;
+  text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+  line-height: 1;
+}
+
+#condition {
+  font-size: 1.25rem;
+  color: #cbd5e1;
+  margin: 0 0 10px 0;
+  font-weight: 500;
+}
+
+#updated {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 25px;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.metric {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 16px;
+  border-radius: 14px;
+  text-align: left;
+  transition: border-color 0.2s;
+}
+
+.metric:hover {
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+.metric span {
+  display: block;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.metric strong {
+  display: block;
+  font-size: 1.25rem;
+  color: #f1f5f9;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 15px;
+  }
+  .metrics {
+    grid-template-columns: 1fr;
+  }
+  .temp {
+    font-size: 4rem;
+  }
+}
+</style>
+</head>
+
+<body>
+<main>
+  <header>
+    <h1>🌦️ Seoul Weather</h1>
+    <p>Live atmospheric data via Open-Meteo</p>
+  </header>
+
+  <section class="card">
+    <button id="refresh">Refresh Weather</button>
+    <p id="status">Loading weather...</p>
+
+    <div id="weather" hidden>
+      <div class="weather-header">Seoul, South Korea</div>
+      <div id="temp" class="temp">--°C</div>
+      <div id="condition">--</div>
+      <p id="updated"></p>
+
+      <div class="metrics">
+        <div class="metric">
+          <span>Feels Like</span>
+          <strong id="feels">--</strong>
+        </div>
+        <div class="metric">
+          <span>Humidity</span>
+          <strong id="humidity">--</strong>
+        </div>
+        <div class="metric">
+          <span>Wind Speed</span>
+          <strong id="wind">--</strong>
+        </div>
+        <div class="metric">
+          <span>Wind Direction</span>
+          <strong id="direction">--</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const API = "https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m&timezone=Asia%2FSeoul";
+
+const descriptions = {
+  0: "Clear sky",
+  1: "Mainly clear",
+  2: "Partly cloudy",
+  3: "Overcast",
+  45: "Fog",
+  48: "Fog",
+  51: "Light drizzle",
+  53: "Moderate drizzle",
+  55: "Heavy drizzle",
+  61: "Light rain",
+  63: "Moderate rain",
+  65: "Heavy rain",
+  71: "Light snow",
+  73: "Moderate snow",
+  75: "Heavy snow",
+  80: "Rain showers",
+  81: "Moderate rain showers",
+  82: "Heavy rain showers",
+  95: "Thunderstorm",
+  96: "Thunderstorm with hail",
+  99: "Thunderstorm with hail"
+};
+
+async function loadWeather() {
+  const button = document.getElementById("refresh");
+  const status = document.getElementById("status");
+  button.disabled = true;
+  status.textContent = "Loading current weather...";
+
+  try {
+    const response = await fetch(API);
+    if (!response.ok) throw new Error("Weather request failed");
+
+    const data = await response.json();
+    const w = data.current;
+
+    document.getElementById("temp").textContent = w.temperature_2m + "°C";
+    document.getElementById("condition").textContent = descriptions[w.weather_code] || "Weather condition unavailable";
+    document.getElementById("feels").textContent = w.apparent_temperature + "°C";
+    document.getElementById("humidity").textContent = w.relative_humidity_2m + "%";
+    document.getElementById("wind").textContent = w.wind_speed_10m + " km/h";
+    document.getElementById("direction").textContent = w.wind_direction_10m + "°";
+    document.getElementById("updated").textContent = "Updated: " + w.time.replace("T", " ") + " (KST)";
+    
+    document.getElementById("weather").hidden = false;
+    status.textContent = "";
+  } catch (error) {
+    status.textContent = "Weather could not load. Check your internet and retry.";
+  } finally {
+    button.disabled = false;
+  }
+}
+
+document.getElementById("refresh").addEventListener("click", loadWeather);
+loadWeather();
+</script>
+</body>
+</html>
