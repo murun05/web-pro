@@ -4,69 +4,158 @@
 <meta charset="UTF-8">
 <title>Accessibility Audit Report - Team 9</title>
 <style>
-  body {
-    font-family: system-ui, -apple-system, sans-serif;
-    padding: 32px;
-    max-width: 700px;
-    margin: 0 auto;
-    color: #222;
-    line-height: 1.6;
-    background: #fafafa;
+  :root {
+    --primary: #10b981;
+    --primary-dark: #047857;
+    --bg-gradient: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
   }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding: 40px 20px;
+    max-width: 760px;
+    margin: 0 auto;
+    color: var(--text-main);
+    line-height: 1.7;
+    background: #f8fafc;
+  }
+
   .container {
     background: #ffffff;
-    padding: 36px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 44px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
   }
-  h1 { font-size: 26px; margin-bottom: 4px; color: #111; }
-  .subtitle { font-size: 14px; color: #555; margin-bottom: 24px; }
-  h2 { font-size: 18px; margin-top: 28px; border-bottom: 2px solid #eaeaea; padding-bottom: 6px; color: #333; }
-  .score-box {
-    background: #f0fdf4;
-    border: 2px solid #1a7f5a;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    margin: 20px 0;
+
+  /* Decorative top accent bar */
+  .container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #10b981, #059669, #047857);
   }
-  .score-number {
-    font-size: 40px;
+
+  h1 { 
+    font-size: 28px; 
     font-weight: 800;
-    color: #1a7f5a;
-    margin: 4px 0;
+    margin-bottom: 4px; 
+    color: #0f172a; 
+    letter-spacing: -0.5px;
   }
-  ul { padding-left: 20px; }
-  li { margin-bottom: 10px; }
+
+  .subtitle { 
+    font-size: 14px; 
+    font-weight: 500;
+    color: var(--text-muted); 
+    margin-bottom: 28px; 
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  h2 { 
+    font-size: 18px; 
+    font-weight: 700;
+    margin-top: 36px; 
+    margin-bottom: 12px;
+    border-bottom: 2px solid #f1f5f9; 
+    padding-bottom: 8px; 
+    color: #334155; 
+  }
+
+  .score-box {
+    background: var(--bg-gradient);
+    border: 1px solid #a7f3d0;
+    padding: 24px;
+    border-radius: 12px;
+    text-align: center;
+    margin: 24px 0;
+    box-shadow: inset 0 2px 4px rgba(16, 185, 129, 0.05);
+  }
+
+  .score-box h3 {
+    margin: 0;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #065f46;
+  }
+
+  .score-number {
+    font-size: 48px;
+    font-weight: 900;
+    color: #059669;
+    margin: 6px 0;
+    letter-spacing: -1px;
+  }
+
+  .status-badge {
+    display: inline-block;
+    background: #d1fae5;
+    color: #065f46;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  ul { 
+    padding-left: 20px; 
+    margin: 12px 0;
+  } 
+
+  li { 
+    margin-bottom: 12px; 
+  }
+
   code {
     background: #f1f5f9;
+    border: 1px solid #e2e8f0;
     padding: 2px 6px;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 13px;
-    color: #d63384;
+    color: #db2777;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
+
   .screenshot-box {
-    margin: 20px 0;
+    margin: 24px 0;
     text-align: center;
     background: #f8fafc;
-    padding: 16px;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
   }
+
   .screenshot-box img {
     max-width: 100%;
     height: auto;
-    border-radius: 6px;
+    border-radius: 8px;
     border: 1px solid #cbd5e1;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
   }
+
+  .screenshot-box img:hover {
+    transform: scale(1.015);
+  }
+
   .footer {
-    margin-top: 36px;
+    margin-top: 44px;
     font-size: 13px;
-    color: #666;
+    color: var(--text-muted);
     text-align: center;
-    border-top: 1px solid #eaeaea;
-    padding-top: 16px;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 20px;
+    font-weight: 500;
   }
 </style>
 </head>
@@ -79,7 +168,7 @@
   <div class="score-box">
     <h3>Lighthouse Accessibility Score</h3>
     <div class="score-number">100 / 100</div>
-    <p style="margin:0; font-size:14px; color:#166534;"><strong>Status:</strong> Maintained clean score (No issues found before or after)</p>
+    <div class="status-badge">Status: Maintained clean score (No issues found before or after)</div>
   </div>
 
   <h2>1. Audit Overview</h2>
@@ -97,16 +186,12 @@
   <p>Manual testing confirmed that the entire page can be navigated sequentially using only the <code>Tab</code> key, complete with visible focus rings. Automated Lighthouse scans consistently verified a clean 100/100 score with zero accessibility barriers.</p>
 
   <h2>4. Lighthouse Audit Screenshots</h2>
-  
- <div class="screenshot-box">
-  <p style="font-weight:600; font-size:14px; color:#333; margin-top:0; margin-bottom:10px;">Initial Audit Score: 100/100</p>
-  
-  <a href="https://raw.githubusercontent.com/murun05/web-pro/main/week9/audit.png" target="_blank">
-    <img src="https://raw.githubusercontent.com/murun05/web-pro/main/week9/audit.png" alt="Initial Lighthouse Accessibility Audit showing 100 out of 100">
-  </a>
-</div>
-
- 
+  <div class="screenshot-box">
+    <p style="font-weight:600; font-size:14px; color:#334155; margin-top:0; margin-bottom:12px;">Initial Audit Score: 100/100</p>
+    <a href="https://raw.githubusercontent.com/murun05/web-pro/main/week9/audit.png" target="_blank">
+      <img src="https://raw.githubusercontent.com/murun05/web-pro/main/week9/audit.png" alt="Initial Lighthouse Accessibility Audit showing 100 out of 100">
+    </a>
+  </div>
 
   <h2>5. Conclusion</h2>
   <p>Designing the application with accessibility in mind from the initial development phase resulted in a flawless audit score of 100/100 from the start. This demonstrates that proactive semantic coding prevents usability barriers efficiently and creates a fully inclusive experience for all users.</p>
@@ -117,4 +202,4 @@
 </div>
 
 </body>
-</html> this not showing drive photo ix it
+</html>
