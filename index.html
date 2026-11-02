@@ -1,14 +1,10 @@
-<!DOCTYPE html> 
-<html>
-<head>
-  <title>Web Pro Projects</title>
-</head><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Web Programming homework portfolio of Otgonjargal Murun.">
   <title>Web Pro Projects | Otgonjargal Murun</title>
-  
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,17 +16,13 @@
       --card-bg: rgba(23, 32, 51, 0.7);
       --card-border: rgba(255, 255, 255, 0.08);
       --accent-glow: #38bdf8;
-      --accent-hover: #0284c7;
+      --accent-hover: #0369a1;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --font: 'Inter', system-ui, -apple-system, sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg-color);
@@ -41,15 +33,29 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background-image: 
+      background-image:
         radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
         radial-gradient(circle at 85% 85%, rgba(99, 102, 241, 0.08) 0%, transparent 40%);
     }
 
-    .container {
-      max-width: 1100px;
-      width: 100%;
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 0.5rem;
+      background: #ffffff;
+      color: #0b0f19;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      z-index: 10;
     }
+    .skip-link:focus { left: 0.5rem; }
+
+    a:focus-visible, iframe:focus-visible {
+      outline: 3px solid var(--accent-glow);
+      outline-offset: 3px;
+    }
+
+    .container { max-width: 1100px; width: 100%; }
 
     header {
       background: var(--card-bg);
@@ -80,9 +86,7 @@
       font-weight: 700;
       letter-spacing: -0.02em;
       margin-bottom: 1rem;
-      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #ffffff;
     }
 
     .profile-info {
@@ -93,24 +97,14 @@
       border-top: 1px solid var(--card-border);
     }
 
-    .info-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-
+    .info-item { display: flex; flex-direction: column; gap: 0.2rem; }
     .info-item .label {
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-muted);
     }
-
-    .info-item .value {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--text-main);
-    }
+    .info-item .value { font-size: 1.05rem; font-weight: 600; color: var(--text-main); }
 
     main {
       display: grid;
@@ -126,14 +120,14 @@
       padding: 1.75rem;
       display: flex;
       flex-direction: column;
-      transition: transform 0.25 ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     }
-
     .week-card:hover {
       transform: translateY(-4px);
       border-color: rgba(56, 189, 248, 0.3);
       box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.4);
     }
+    .week-card.wide { grid-column: 1 / -1; }
 
     .week-card h2 {
       font-size: 1.25rem;
@@ -144,7 +138,6 @@
       align-items: center;
       justify-content: space-between;
     }
-
     .week-card h2::after {
       content: '';
       flex: 1;
@@ -159,11 +152,11 @@
       gap: 0.6rem;
       list-style: none;
     }
-
     .task-grid a {
       display: flex;
       align-items: center;
       justify-content: center;
+      min-height: 44px;
       padding: 0.65rem 0.5rem;
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.03);
@@ -172,15 +165,64 @@
       text-decoration: none;
       font-size: 0.875rem;
       font-weight: 500;
+      text-align: center;
       transition: all 0.2s ease;
     }
-
     .task-grid a:hover {
       background: var(--accent-hover);
       color: #ffffff;
       border-color: var(--accent-hover);
       transform: scale(1.02);
     }
+
+    .members {
+      margin: 1rem 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      list-style: none;
+    }
+    .members li {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+    }
+    .members .member-name { display: block; font-size: 0.8rem; color: var(--text-muted); }
+    .members .member-id { font-weight: 600; }
+
+    .preview { position: relative; width: 100%; height: 450px; margin-top: 1rem; }
+    .preview iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+
+    .project-links {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      list-style: none;
+    }
+    .project-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      min-height: 44px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #ffffff;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s ease;
+    }
+    .project-links a:hover { background: var(--accent-hover); }
 
     footer {
       margin-top: 3.5rem;
@@ -198,6 +240,7 @@
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#content">Skip to homework list</a>
 
   <div class="container">
     <header>
@@ -215,57 +258,43 @@
       </div>
     </header>
 
-    <main>
-<section class="week-card" style="grid-column: 1 / -1;">
-    <h2>Group project Team 9</h2>
-    
-    <div style="margin: 1rem 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-        <div style="background: rgba(255, 255, 255, 0.03); padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--card-border);">
-            <span style="display: block; font-size: 0.8rem; color: var(--text-muted);">Otgonjargal Murun</span>
-            <span style="font-weight: 600;">ID-202539440</span>
-        </div>
-        <div style="background: rgba(255, 255, 255, 0.03); padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--card-border);">
-            <span style="display: block; font-size: 0.8rem; color: var(--text-muted);">Anand</span>
-            <span style="font-weight: 600;">ID-202539455</span>
-        </div>
-        <div style="background: rgba(255, 255, 255, 0.03); padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--card-border);">
-            <span style="display: block; font-size: 0.8rem; color: var(--text-muted);">Lhamaa</span>
-            <span style="font-weight: 600;">ID-202537428</span>
-        </div>
-    </div>
+    <main id="content">
 
-    <div style="margin-top: 1rem; display: flex; justify-content: center;">
-        <div style="position: relative; width: 100%; height: 450px;">
-            <iframe src="https://drive.google.com/file/d/1gCIGlR9N0u58BnqyNcpjSB4yva7yyDRN/preview" title="Group project proposal" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 1px solid var(--card-border); border-radius: 12px;" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+      <section class="week-card wide">
+        <h2>Group project Team 9</h2>
+
+        <ul class="members">
+          <li><span class="member-name">Otgonjargal Murun</span><span class="member-id">ID-202539440</span></li>
+          <li><span class="member-name">Anand</span><span class="member-id">ID-202539455</span></li>
+          <li><span class="member-name">Lhamaa</span><span class="member-id">ID-202537428</span></li>
+        </ul>
+
+        <div class="preview">
+          <iframe src="https://drive.google.com/file/d/1gCIGlR9N0u58BnqyNcpjSB4yva7yyDRN/preview" title="Group project proposal presentation" loading="lazy" allow="autoplay" allowfullscreen></iframe>
         </div>
-    </div>
 
- <ul class="link-list project-links" style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 1rem; list-style: none; padding: 0;">
-    <li>
-        <a href="https://drive.google.com/drive/folders/1pykMmDwcbq_IxctjuRzgpwywaZWCl6Bq?usp=drive_link" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255, 255, 255, 0.05); color: #ffffff; padding: 0.75rem 1.25rem; border-radius: 8px; border: 1px solid var(--card-border); text-decoration: none; font-weight: 500; transition: background 0.2s ease;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-            Open Group Google Drive Folder
-        </a>
-    </li>
-    <li>
-        <a href="group project/website.html" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255, 255, 255, 0.05); color: #ffffff; padding: 0.75rem 1.25rem; border-radius: 8px; border: 1px solid var(--card-border); text-decoration: none; font-weight: 500; transition: background 0.2s ease;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-            Open Website
-        </a>
-    </li>
-<li>
-        <a href="https://github.com/murun05/web-pro/blob/main/group%20project/website.html" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255, 255, 255, 0.05); color: #ffffff; padding: 0.75rem 1.25rem; border-radius: 8px; border: 1px solid var(--card-border); text-decoration: none; font-weight: 500; transition: background 0.2s ease;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-            Open Source Code
-        </a>
-    </li>
-</ul>
-</section>
+        <ul class="project-links">
+          <li>
+            <a href="https://drive.google.com/drive/folders/1pykMmDwcbq_IxctjuRzgpwywaZWCl6Bq?usp=drive_link" target="_blank" rel="noopener">
+              <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              Open Group Google Drive Folder
+            </a>
+          </li>
+          <li>
+            <a href="group%20project/website.html" target="_blank" rel="noopener">
+              <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              Open Website
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/murun05/web-pro/blob/main/group%20project/website.html" target="_blank" rel="noopener">
+              <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+              Open Source Code
+            </a>
+          </li>
+        </ul>
+      </section>
 
-
-     
-      
-      
       <section class="week-card">
         <h2>Week 1</h2>
         <ul class="task-grid">
@@ -279,7 +308,6 @@
           <li><a href="week1/task8.html">Task 8</a></li>
         </ul>
       </section>
-
 
       <section class="week-card">
         <h2>Week 2</h2>
@@ -295,7 +323,6 @@
         </ul>
       </section>
 
-      
       <section class="week-card">
         <h2>Week 3</h2>
         <ul class="task-grid">
@@ -309,7 +336,6 @@
         </ul>
       </section>
 
-    
       <section class="week-card">
         <h2>Week 3-2</h2>
         <ul class="task-grid">
@@ -323,7 +349,6 @@
         </ul>
       </section>
 
-     
       <section class="week-card">
         <h2>Week 4</h2>
         <ul class="task-grid">
@@ -334,7 +359,6 @@
           <li><a href="week4/homework.html">Week 4 Homework</a></li>
         </ul>
       </section>
-      
 
       <section class="week-card">
         <h2>Week 5</h2>
@@ -344,181 +368,71 @@
         </ul>
       </section>
 
-
-<section class="week-card">
-    <h2>Week 6</h2>
-    <ul class="task-grid">
-       <li><a href="week6/country-explorer.html">Country Explorer</a></li>
-        <li><a href="week6/pokemon.html">Pokémon HUD</a></li>
-        <li><a href="week6/random-user.html">User Directory</a></li>
-        <li><a href="week6/weather.html">Seoul Weather</a></li>
-        <li><a href="week6/blog-fetcher.html">Blog Fetcher</a></li>
-        <li><a href="week6/joke-fetcher.html">Joke Fetcher</a></li>
-    </ul>
-</section>
-<section class="week-card">
-  <h2>Week 7</h2>
-  <ul class="task-grid">
-    <li><a href="week7/booksearch.html">Book Search</a></li>
-    <li><a href="week7/step1.html">Step 1</a></li>
-    <li><a href="week7/step2.html">Step 2</a></li>
-    <li><a href="week7/step3.html">Step 3</a></li>
-    <li><a href="week7/step4.html">Step 4</a></li>
-    <li><a href="week7/step5.html">Step 5</a></li>
-    <li><a href="week7/step6.html">Step 6</a></li>
-  </ul>
-</section>
+      <section class="week-card">
+        <h2>Week 6</h2>
+        <ul class="task-grid">
+          <li><a href="week6/country-explorer.html">Country Explorer</a></li>
+          <li><a href="week6/pokemon.html">Pokémon HUD</a></li>
+          <li><a href="week6/random-user.html">User Directory</a></li>
+          <li><a href="week6/weather.html">Seoul Weather</a></li>
+          <li><a href="week6/blog-fetcher.html">Blog Fetcher</a></li>
+          <li><a href="week6/joke-fetcher.html">Joke Fetcher</a></li>
+        </ul>
+      </section>
 
       <section class="week-card">
-       <h2>Week 8</h2>
-<ul class="task-grid">
-  <li><a href="week8/task1.html">Week 8 Task 1</a></li>
-  <li><a href="week8/task2.html">Week 8 Task 2</a></li>
-  <li><a href="week8/task3.html">Week 8 Task 3</a></li>
-  <li><a href="week8/task4.html">Week 8 Task 4</a></li>
-  <li><a href="week8/homework.html">Week 8 Homework</a></li>
-  
-</ul>
+        <h2>Week 7</h2>
+        <ul class="task-grid">
+          <li><a href="week7/booksearch.html">Book Search</a></li>
+          <li><a href="week7/step1.html">Step 1</a></li>
+          <li><a href="week7/step2.html">Step 2</a></li>
+          <li><a href="week7/step3.html">Step 3</a></li>
+          <li><a href="week7/step4.html">Step 4</a></li>
+          <li><a href="week7/step5.html">Step 5</a></li>
+          <li><a href="week7/step6.html">Step 6</a></li>
+        </ul>
+      </section>
+
+      <section class="week-card">
+        <h2>Week 8</h2>
+        <ul class="task-grid">
+          <li><a href="week8/task1.html">Week 8 Task 1</a></li>
+          <li><a href="week8/task2.html">Week 8 Task 2</a></li>
+          <li><a href="week8/task3.html">Week 8 Task 3</a></li>
+          <li><a href="week8/task4.html">Week 8 Task 4</a></li>
+          <li><a href="week8/homework.html">Week 8 Homework</a></li>
+        </ul>
       </section>
 
       <section class="week-card">
         <h2>Week 8-2</h2>
         <ul class="task-grid">
           <li><a href="week8-2/task1.html">Step 1</a></li>
-    <li><a href="week8-2/task2.html">Step 2</a></li>
-    <li><a href="week8-2/task3.html">Step 3</a></li>
-    <li><a href="week8-2/task4.html">Step 4</a></li>
-    <li><a href="week8-2/task5.html">Step 5</a></li>
-    <li><a href="week8-2/task6.html">Step 6</a></li>
-    <li><a href="week8-2/homework.html">Homework</a></li>
-         
+          <li><a href="week8-2/task2.html">Step 2</a></li>
+          <li><a href="week8-2/task3.html">Step 3</a></li>
+          <li><a href="week8-2/task4.html">Step 4</a></li>
+          <li><a href="week8-2/task5.html">Step 5</a></li>
+          <li><a href="week8-2/task6.html">Step 6</a></li>
+          <li><a href="week8-2/homework.html">Homework</a></li>
         </ul>
       </section>
 
- <section class="week-card">
+      <section class="week-card">
         <h2>Week 9</h2>
         <ul class="task-grid">
-          <li><a href="week9/task1.html">task 1</a></li>
-    <li><a href="week9/task2.html">task 2</a></li>
-    <li><a href="week9/task3.html">task 3</a></li>
-   <li><a href="week9/task4.html">Student Registration</a></li>
-    <li><a href="week9/audit.html"> website audit      
-      
+          <li><a href="week9/task1.html">Task 1</a></li>
+          <li><a href="week9/task2.html">Task 2</a></li>
+          <li><a href="week9/task3.html">Task 3</a></li>
+          <li><a href="week9/task4.html">Student Registration</a></li>
+          <li><a href="week9/audit.html">Website Audit</a></li>
+        </ul>
+      </section>
+
     </main>
 
     <footer>
       <p>&copy; 2026 Otgonjargal Murun — Web Pro Submissions</p>
     </footer>
   </div>
-
 </body>
-</html>
-<body>
-  <h1>My Web Pro Homework</h1>
- 
-  <h2>Week 1</h2>
-  <ul>
-    <li><a href="week1/task1.html">Week 1 Task 1</a></li>
-    <li><a href="week1/task2.html">Week 1 Task 2</a></li>
-    <li><a href="week1/task3.html">Week 1 Task 3</a></li>
-    <li><a href="week1/task4.html">Week 1 Task 4</a></li>
-    <li><a href="week1/task5.html">Week 1 Task 5</a></li>
-    <li><a href="week1/task6.html">Week 1 Task 6</a></li>
-    <li><a href="week1/task7.html">Week 1 Task 7</a></li>
-    <li><a href="week1/task8.html">Week 1 Task 8</a></li>
-  </ul>
-
-  <h2>Week 2</h2>
-  <ul>
-    <li><a href="week2/task1.html">Week 2 Task 1</a></li>
-    <li><a href="week2/task2.html">Week 2 Task 2</a></li>
-    <li><a href="week2/task3.html">Week 2 Task 3</a></li>
-    <li><a href="week2/task4.html">Week 2 Task 4</a></li>
-    <li><a href="week2/task5.html">Week 2 Task 5</a></li>
-    <li><a href="week2/task6.html">Week 2 Task 6</a></li>
-    <li><a href="week2/task7.html">Week 2 Task 7</a></li>
-    <li><a href="week2/task8.html">Week 2 Task 8</a></li>
-  </ul>
-
-  <h2>Week 3</h2>
-  <ul>
-    <li><a href="week3/task1.html">Week 3 Task 1</a></li>
-    <li><a href="week3/task2.html">Week 3 Task 2</a></li>
-    <li><a href="week3/task3.html">Week 3 Task 3</a></li>
-    <li><a href="week3/task4.html">Week 3 Task 4</a></li>
-    <li><a href="week3/task5.html">Week 3 Task 5</a></li>
-    <li><a href="week3/task6.html">Week 3 Task 6</a></li>
-    <li><a href="week3/task7.html">Week 3 Task 7</a></li>
-  </ul>
-
-  <h2>Week 3-2</h2>
-    <ul>
-    <li><a href="week3-2/task1.html">Week 3 Task 1</a></li>
-    <li><a href="week3-2/task2.html">Week 3 Task 2</a></li>
-    <li><a href="week3-2/task3.html">Week 3 Task 3</a></li>
-    <li><a href="week3-2/task4.html">Week 3 Task 4</a></li>
-    <li><a href="week3-2/task5.html">Week 3 Task 5</a></li>
-    <li><a href="week3-2/task6.html">Week 3 Task 6</a></li>
-    <li><a href="week3-2/task7.html">Week 3 Task 7</a></li>
-  </ul>
-
-  <h2>Week 4</h2>
-    <ul>
-  <li><a href="week4/task1.html">Week 4 Task 1</a></li>
-  <li><a href="week4/task2.html">Week 4 Task 2</a></li>
-  <li><a href="week4/task3.html">Week 4 Task 3</a></li>
-  <li><a href="week4/task4.html">Week 4 Task 4</a></li>
-  <li><a href="week4/homework.html">Week 4 Homework</a></li>
-</ul>
- 
-  <h2>Week 5</h2>
-</ul>
-  <li><a href="week5/counter.html">Week 5 Task 1</a></li>
-  <li><a href="week4/js-basic.html">Week 5 Task 2</a></li>
-</ul>
-
-  <h2>Week 6</h2>
-</ul>
-        <li><a href="week6/country-explorer.html">Country Explorer</a></li>
-        <li><a href="week6/pokemon.html">Pokémon HUD</a></li>
-        <li><a href="week6/random-user.html">User Directory</a></li>
-        <li><a href="week6/weather.html">Seoul Weather</a></li>
-        <li><a href="week6/blog-fetcher.html">Blog Fetcher</a></li>
-        <li><a href="week6/joke-fetcher.html">Joke Fetcher</a></li>
- 
-</ul>
-
-        <h2>Week 7</h2>
-        </ul >
-          <li><a href="week7/booksearch.html">booksearch</a></li>
-          
-        </u
-  <h2>Week 8</h2>
-<ul>
-  <li><a href="week8/task1.html">Week 8 Task 1</a></li>
-  <li><a href="week8/task2.html">Week 8 Task 2</a></li>
-  <li><a href="week8/task3.html">Week 8 Task 3</a></li>
-  <li><a href="week8/task4.html">Week 8 Task 4</a></li>
-  <li><a href="week8/homework.html">Week 8 Homework</a></li>
-</ul>
-
-   <h2>Week 8-2</h2>
-        <ul>
-         <li><a href="week8-2/task2.html">Step 2</a></li>
-    <li><a href="week8-2/task3.html">Step 3</a></li>
-    <li><a href="week8-3/task4.html">Step 4</a></li>
-    <li><a href="week8-2/task5.html">Step 5</a></li>
-    <li><a href="week8-2/task6.html">Step 6</a></li>
-          <li><a href="week8-2/homework.html">Homework</a></li>
-         
-        </ul>
- <h2>Week 9</h2>
-        <ul>
-          <li><a href="week9/task1.html">task 1</a></li>
-    <li><a href="week9/task2.html">task 2</a></li>
-    <li><a href="week9/task3.html">task 3</a></li>
-   <li><a href="week9/task4.html">Student Registration</a></li>
-    <li><a href="week9/audit.html"> website-audit   
-<ul>
-    </body>
 </html>
