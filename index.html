@@ -50,9 +50,24 @@
     }
     .skip-link:focus { left: 0.5rem; }
 
-    a:focus-visible, iframe:focus-visible {
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
       outline: 3px solid var(--accent-glow);
-      outline-offset: 3px;
+      outline-offset: 4px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
 
     .container { max-width: 1100px; width: 100%; }
@@ -192,13 +207,43 @@
     .members .member-id { font-weight: 600; }
 
     .preview { position: relative; width: 100%; height: 450px; margin-top: 1rem; }
-    .preview iframe {
+    .presentation-link {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 1.5rem;
+      background: #111827;
       border: 1px solid var(--card-border);
       border-radius: 12px;
+      color: #ffffff;
+      text-decoration: none;
+      text-align: center;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .presentation-link:hover {
+      background: #1e293b;
+      border-color: rgba(56, 189, 248, 0.45);
+    }
+
+    .presentation-icon {
+      color: var(--accent-glow);
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+
+    .presentation-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .presentation-description {
+      color: #cbd5e1;
+      font-size: 0.875rem;
     }
 
     .project-links {
@@ -270,7 +315,19 @@
         </ul>
 
         <div class="preview">
-          <iframe src="https://drive.google.com/file/d/1gCIGlR9N0u58BnqyNcpjSB4yva7yyDRN/preview" title="Group project proposal presentation" loading="lazy" allow="autoplay" allowfullscreen></iframe>
+          <a
+            class="presentation-link"
+            href="https://drive.google.com/file/d/1gCIGlR9N0u58BnqyNcpjSB4yva7yyDRN/view"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View Team 9 group project presentation on Google Drive (opens in a new tab)"
+          >
+            <span class="presentation-icon" aria-hidden="true">↗</span>
+            <span class="presentation-title">View Team 9 Presentation</span>
+            <span class="presentation-description">
+              Open the project presentation in Google Drive
+            </span>
+          </a>
         </div>
 
         <ul class="project-links">
@@ -427,7 +484,16 @@
           <li><a href="week9/audit.html">Website Audit</a></li>
         </ul>
       </section>
+    
+      <section class="week-card">
+        <h2>Week 9-2</h2>
+        <ul class="task-grid">
+           <li><a href="week9-2/audit.html">Project Website Audit</a></li>
+        </ul>
+      </section>
 
+
+      
     </main>
 
     <footer>
