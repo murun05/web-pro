@@ -1,205 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Accessibility Audit Report - Team 9</title>
-<style>
-  :root {
-    --primary: #10b981;
-    --primary-dark: #047857;
-    --bg-gradient: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
-    --text-main: #1e293b;
-    --text-muted: #64748b;
-    --border-color: #e2e8f0;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website Accessibility Audit Report | Otgonjargal Murun</title>
 
-  body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    padding: 40px 20px;
-    max-width: 760px;
-    margin: 0 auto;
-    color: var(--text-main);
-    line-height: 1.7;
-    background: #f8fafc;
-  }
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #172033;
+      --line: rgba(255, 255, 255, 0.12);
+      --text: #f8fafc;
+      --muted: #a9b6c9;
+      --accent: #38bdf8;
+      --code: #0f172a;
+      --bad: #f87171;
+      --good: #4ade80;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 40px 20px; background: var(--bg); color: var(--text); font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 18px; line-height: 1.6; }
+    .skip-link { position: absolute; left: 8px; top: -60px; z-index: 100; padding: 8px 16px; background: #fff; color: #000; border-radius: 6px; text-decoration: none; }
+    .skip-link:focus { top: 8px; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    main:focus { outline: none; }
 
-  .container {
-    background: #ffffff;
-    padding: 44px;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-    position: relative;
-    overflow: hidden;
-  }
+    .page { max-width: 860px; margin: 0 auto; }
+    h1 { font-size: clamp(2rem, 6vw, 3rem); line-height: 1.1; margin: 0 0 28px; text-align: center; }
+    h1 span { color: var(--accent); }
 
-  /* Decorative top accent bar */
-  .container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: linear-gradient(90deg, #10b981, #059669, #047857);
-  }
+    section { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 24px 28px 28px; margin-bottom: 22px; }
+    h2 { font-size: 1.5rem; margin: 0 0 14px; padding-bottom: 10px; border-bottom: 1px solid var(--line); color: var(--accent); }
+    h3 { font-size: 1.1rem; margin: 22px 0 6px; }
+    p { margin: 0 0 12px; }
 
-  h1 { 
-    font-size: 28px; 
-    font-weight: 800;
-    margin-bottom: 4px; 
-    color: #0f172a; 
-    letter-spacing: -0.5px;
-  }
+    .score { display: inline-block; background: rgba(56, 189, 248, 0.12); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 99px; padding: 2px 16px; font-weight: 600; }
+    figure { margin: 16px 0 4px; }
+    figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 12px; }
+    figcaption { font-size: 15px; margin-top: 6px; color: var(--muted); }
 
-  .subtitle { 
-    font-size: 14px; 
-    font-weight: 500;
-    color: var(--text-muted); 
-    margin-bottom: 28px; 
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
+    pre { margin: 4px 0 14px; padding: 14px 16px; background: var(--code); border-radius: 10px; overflow-x: auto; font-size: 14.5px; line-height: 1.45; }
+    code { font-family: Consolas, "Courier New", monospace; }
+    p code { background: var(--code); padding: 1px 6px; border-radius: 6px; font-size: .85em; }
+    .label { margin: 10px 0 0; font-size: 15px; font-weight: 700; }
+    .label.before { color: var(--bad); }
+    .label.after { color: var(--good); }
 
-  h2 { 
-    font-size: 18px; 
-    font-weight: 700;
-    margin-top: 36px; 
-    margin-bottom: 12px;
-    border-bottom: 2px solid #f1f5f9; 
-    padding-bottom: 8px; 
-    color: #334155; 
-  }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0 4px; font-size: 16px; }
+    th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; font-weight: 400; }
+    thead th { font-weight: 700; color: var(--accent); }
 
-  .score-box {
-    background: var(--bg-gradient);
-    border: 1px solid #a7f3d0;
-    padding: 24px;
-    border-radius: 12px;
-    text-align: center;
-    margin: 24px 0;
-    box-shadow: inset 0 2px 4px rgba(16, 185, 129, 0.05);
-  }
-
-  .score-box h3 {
-    margin: 0;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #065f46;
-  }
-
-  .score-number {
-    font-size: 48px;
-    font-weight: 900;
-    color: #059669;
-    margin: 6px 0;
-    letter-spacing: -1px;
-  }
-
-  .status-badge {
-    display: inline-block;
-    background: #d1fae5;
-    color: #065f46;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    margin-top: 4px;
-  }
-
-  ul { 
-    padding-left: 20px; 
-    margin: 12px 0;
-  } 
-
-  li { 
-    margin-bottom: 12px; 
-  }
-
-  code {
-    background: #f1f5f9;
-    border: 1px solid #e2e8f0;
-    padding: 2px 6px;
-    border-radius: 6px;
-    font-size: 13px;
-    color: #db2777;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  }
-
-  .screenshot-box {
-    margin: 24px 0;
-    text-align: center;
-    background: #f8fafc;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-  }
-
-  .screenshot-box img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    border: 1px solid #cbd5e1;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease;
-  }
-
-  .screenshot-box img:hover {
-    transform: scale(1.015);
-  }
-
-  .footer {
-    margin-top: 44px;
-    font-size: 13px;
-    color: var(--text-muted);
-    text-align: center;
-    border-top: 1px solid #f1f5f9;
-    padding-top: 20px;
-    font-weight: 500;
-  }
-</style>
+    .back { display: inline-block; margin-top: 8px; color: var(--accent); }
+  </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
 
-<div class="container">
-  <h1>Accessibility Audit Report</h1>
-  <div class="subtitle">Team 9 — Web Programming | Gachon University</div>
+<main id="main" tabindex="-1">
+<div class="page">
 
-  <div class="score-box">
-    <h3>Lighthouse Accessibility Score</h3>
-    <div class="score-number">100 / 100</div>
-    <div class="status-badge">Status: Maintained clean score (No issues found before or after)</div>
-  </div>
+  <h1>Website <span>Accessibility</span> Audit Report</h1>
 
-  <h2>1. Audit Overview</h2>
-  <p>When the initial Lighthouse accessibility audit was run on the project codebase, <strong>zero accessibility violations, errors, or warnings</strong> were identified. Because accessibility standards were built into the project from day one, no retroactive fixes were required.</p>
+  <section>
+    <h2>1. Introduction</h2>
+    <p>I used Google Lighthouse in Chrome DevTools to evaluate the accessibility of my Web Pro homework hub (murun05.github.io/web-pro/). I ran the audit with only the Accessibility category selected, once before and once after fixing the problems I found.</p>
+  </section>
 
-  <h2>2. Proactive Accessibility Measures Implemented from Scratch</h2>
-  <ul>
-    <li><strong>Semantic Interactive Elements:</strong> All interactive controls and buttons were developed using native HTML <code>&lt;button&gt;</code> elements rather than generic <code>&lt;div&gt;</code> tags, guaranteeing built-in keyboard navigation and screen-reader focus support.</li>
-    <li><strong>WCAG-Compliant Color Contrast:</strong> All text and background color combinations were carefully selected to meet or exceed the WCAG AA minimum contrast ratio (4.5:1), ensuring full legibility for users with visual impairments.</li>
-    <li><strong>Logical Heading Hierarchy:</strong> Document structure follows a strict, sequential heading order (from <code>&lt;h1&gt;</code> down to <code>&lt;h3&gt;</code>), allowing assistive technologies to navigate the layout seamlessly without skipping levels.</li>
-    <li><strong>Comprehensive Image Alternative Text:</strong> Informational images and charts feature accurate descriptive <code>alt</code> attributes, while purely decorative elements utilize empty <code>alt=""</code> attributes.</li>
-  </ul>
+  <section>
+    <h2>2. Before the Fixes</h2>
+    <p>Initial Lighthouse accessibility score: <span class="score">69/100</span></p>
+    <p>The page looked fine visually, but it was well below the 90 I wanted to reach.</p>
+    <figure>
+      <img src="before-score.png" alt="Lighthouse accessibility score of 69 before the fixes">
+      <figcaption>Lighthouse accessibility score before the fixes.</figcaption>
+    </figure>
+    <figure>
+      <img src="before-audit.png" alt="Lighthouse failed audit before the fixes: Links do not have a discernible name">
+      <figcaption>Failed audit before the fixes.</figcaption>
+    </figure>
+  </section>
 
-  <h2>3. Verification & Testing</h2>
-  <p>Manual testing confirmed that the entire page can be navigated sequentially using only the <code>Tab</code> key, complete with visible focus rings. Automated Lighthouse scans consistently verified a clean 100/100 score with zero accessibility barriers.</p>
+  <section>
+    <h2>3. Issues Identified</h2>
+    <p>One problem was flagged directly by Lighthouse. The other two I found by reading my own HTML.</p>
 
-  <h2>4. Lighthouse Audit Screenshots</h2>
-  <div class="screenshot-box">
-    <p style="font-weight:600; font-size:14px; color:#334155; margin-top:0; margin-bottom:12px;">Initial Audit Score: 100/100</p>
-    <a href="https://raw.githubusercontent.com/murun05/web-pro/main/week9/audit.png" target="_blank">
-      <img src="https://raw.githubusercontent.com/murun05/web-pro/main/week9/audit.png" alt="Initial Lighthouse Accessibility Audit showing 100 out of 100">
-    </a>
-  </div>
+    <h3>Issue 1: Links do not have a discernible name (flagged by Lighthouse)</h3>
+    <p>The Week 9 link to <code>audit.html</code> was never closed with <code>&lt;/a&gt;</code>. My <code>&lt;ul&gt;</code> and <code>&lt;section&gt;</code> for Week 9 were also left open. A screen reader needs text inside a link to announce it, and an unclosed link can leave empty links in the page.</p>
 
-  <h2>5. Conclusion</h2>
-  <p>Designing the application with accessibility in mind from the initial development phase resulted in a flawless audit score of 100/100 from the start. This demonstrates that proactive semantic coding prevents usability barriers efficiently and creates a fully inclusive experience for all users.</p>
+    <h3>Issue 2: Two pages pasted into one file (found in the code)</h3>
+    <p>My <code>index.html</code> had two full documents glued together: a second <code>&lt;!DOCTYPE html&gt;</code>, <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code> and <code>&lt;body&gt;</code>, with my old plain homework list underneath the new design.</p>
 
-  <div class="footer">
-    Team 9 | Gachon University · Computer Engineering
-  </div>
+    <h3>Issue 3: Broken lists in the old copy (found in the code)</h3>
+    <p>In the old list, some <code>&lt;li&gt;</code> items sat outside any <code>&lt;ul&gt;</code> because of a misplaced <code>&lt;/ul&gt;</code>, and the links used the browser's default blue on my dark background, which is hard to read.</p>
+  </section>
+
+  <section>
+    <h2>4. Accessibility Fixes</h2>
+
+    <h3>Fix 1: Close the link and the list</h3>
+    <p>I gave the link clear text and closed the <code>&lt;a&gt;</code>, <code>&lt;li&gt;</code>, <code>&lt;ul&gt;</code> and <code>&lt;section&gt;</code> tags.</p>
+    <p class="label before">Before (index.html)</p>
+<pre tabindex="0"><code>&lt;li&gt;&lt;a href="week9/audit.html"&gt; website audit
+
+&lt;/main&gt;</code></pre>
+    <p class="label after">After (index.html)</p>
+<pre tabindex="0"><code>&lt;li&gt;&lt;a href="week9/audit.html"&gt;Website Audit&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;/main&gt;</code></pre>
+
+    <h3>Fix 2: One document, one structure</h3>
+    <p>I deleted the duplicated old page so the file has a single <code>&lt;html lang="en"&gt;</code>, one <code>&lt;head&gt;</code> and one <code>&lt;body&gt;</code>. This also removed the old list with the unreadable blue links.</p>
+    <p class="label before">Before (index.html)</p>
+<pre tabindex="0"><code>&lt;/head&gt;&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+...
+&lt;/html&gt;
+&lt;body&gt;
+  &lt;h1&gt;My Web Pro Homework&lt;/h1&gt;</code></pre>
+    <p class="label after">After (index.html)</p>
+<pre tabindex="0"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt; ... &lt;/head&gt;
+&lt;body&gt; ... &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+    <h3>Fix 3: Valid lists</h3>
+    <p>Every <code>&lt;li&gt;</code> is now inside its own <code>&lt;ul&gt;</code>, one list per week card.</p>
+    <p class="label before">Before (index.html)</p>
+<pre tabindex="0"><code>&lt;h2&gt;Week 5&lt;/h2&gt;
+&lt;/ul&gt;
+  &lt;li&gt;&lt;a href="week5/counter.html"&gt;Week 5 Task 1&lt;/a&gt;&lt;/li&gt;</code></pre>
+    <p class="label after">After (index.html)</p>
+<pre tabindex="0"><code>&lt;h2&gt;Week 5&lt;/h2&gt;
+&lt;ul class="task-grid"&gt;
+  &lt;li&gt;&lt;a href="week5/counter.html"&gt;Counter&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+    <h3>Fix 4: Smaller improvements</h3>
+    <p>I hid the decorative icons from screen readers, added a skip link and a visible keyboard focus outline, and darkened the hover color so the white link text stays readable.</p>
+    <p class="label before">Before (index.html)</p>
+<pre tabindex="0"><code>&lt;svg width="18" height="18" viewBox="0 0 24 24"&gt;</code></pre>
+    <p class="label after">After (index.html)</p>
+<pre tabindex="0"><code>&lt;svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24"&gt;</code></pre>
+  </section>
+
+  <section>
+    <h2>5. After the Fixes</h2>
+    <p>Final Lighthouse accessibility score: <span class="score">100/100</span></p>
+    <figure>
+      <img src="after-score.png" alt="Lighthouse accessibility score of 100 after the fixes">
+      <figcaption>Lighthouse accessibility score after the fixes.</figcaption>
+    </figure>
+
+    <table>
+      <thead>
+        <tr><th scope="col">Item</th><th scope="col">Before</th><th scope="col">After</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Accessibility score</th><td>69</td><td>100</td></tr>
+        <tr><th scope="row">Links do not have a discernible name</th><td>Failed</td><td>Passed</td></tr>
+        <tr><th scope="row">HTML documents in index.html</th><td>2 (pasted together)</td><td>1</td></tr>
+      </tbody>
+    </table>
+    <p>After the fixes, the report still lists "Identical links have the same purpose" under Best Practices. It is an informational item and does not change the score. It appears because link names such as "Task 1" repeat across different weeks.</p>
+  </section>
+
+  <section>
+    <h2>6. Which Change Mattered Most</h2>
+    <p>The most important change was closing the Week 9 link and removing the duplicated page. The unclosed link matches the one failing audit Lighthouse showed me. I did not test each fix on its own, so I cannot say exactly how many points each one gave.</p>
+    <p>A screen reader announces a link by its text. If a link has no text, the user hears only "link" and cannot tell where it goes. Closing the tags properly and keeping a single clean document means the browser builds the page the way I meant it to be built, so every link has a name and every list item sits in a list.</p>
+  </section>
+
+  <section>
+    <h2>7. Conclusion</h2>
+    <p>I closed the unclosed link and list tags, removed the duplicated old page, made sure all list items are inside lists, and added a few accessibility improvements. These changes raised my Accessibility score from 69 to 100.</p>
+  </section>
+
+
 </div>
-
+</main>
 </body>
 </html>
