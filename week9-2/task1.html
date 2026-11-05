@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Optimized Performance Practice Page</title>
+  
+  <!-- FIX 1: Add 'defer' to prevent render-blocking -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
+  
+  <style>
+    body { font-family: system-ui; padding: 24px; max-width: 600px; margin: auto; }
+    img { width: 100%; height: auto; border-radius: 8px; margin: 12px 0; }
+    h2 { color: #e85d04; }
+  </style>
+</head>
+<body>
+  <h1>Performance Test Page</h1>
+  <p>This page has been optimized for peak performance!</p>
+  
+  <!-- FIX 2: Above-fold (Hero) image with width/height to prevent CLS and high fetch priority -->
+  <img src="https://picsum.photos/1200/800" alt="Random photo from Lorem Picsum" width="1200" height="800" fetchpriority="high">
+  
+  <!-- FIX 3 & 4: Below-fold images with lazy loading and explicit dimensions -->
+  <img src="https://picsum.photos/1200/801" alt="Random photo 2" width="1200" height="801" loading="lazy">
+  <img src="https://picsum.photos/1200/802" alt="Random photo 3" width="1200" height="802" loading="lazy">
+  
+  <h2>YOUR FIXES:</h2>
+  <p>Added defer to the script, added loading="lazy" to below-fold images, and added width/height attributes to eliminate layout shifts.</p>
+</body>
+</html>
