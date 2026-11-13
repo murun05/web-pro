@@ -1,172 +1,223 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="A filterable gallery of Otgonjargal Murun's web projects." />
-  <title>Project Gallery | Otgonjargal Murun</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Gallery | OTGONJARGAL MURUN ID-202539440</title>
+  
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
-    :root {
-      color-scheme: dark;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0b0f19;
-      color: #f8fafc;
-      font-synthesis: none;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+    body {
+      background-color: #0b0f19;
+      color: #f8fafc;
       min-height: 100vh;
-      background:
-        radial-gradient(ellipse at 12% 0%, rgba(56, 189, 248, .13), transparent 38rem),
-        #0b0f19;
+      position: relative;
     }
-
-    a { color: inherit; }
-
-    .gallery-shell {
-      width: min(1080px, calc(100% - 2rem));
-      margin: 0 auto;
-      padding: 4rem 0;
-    }
-
-    .eyebrow {
+    .team-badge {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      padding: 0.6rem 1rem;
+      border-radius: 0.75rem;
+      font-size: 0.8rem;
       color: #38bdf8;
-      font-size: .78rem;
-      font-weight: 800;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      margin: .55rem 0 .75rem;
-      font-size: clamp(2.2rem, 6vw, 4rem);
-      letter-spacing: -.055em;
-    }
-
-    .intro {
-      max-width: 620px;
-      color: #a7b3c5;
-      line-height: 1.7;
-    }
-
-    .filter-area { margin: 2rem 0 1.5rem; }
-    .filter-label { display: block; margin-bottom: .75rem; color: #a7b3c5; font-size: .9rem; }
-
-    .filter-bar { display: flex; flex-wrap: wrap; gap: .65rem; }
-
-    .filter-button {
-      border: 1px solid #29364a;
-      border-radius: 999px;
-      padding: .65rem 1rem;
-      background: #111a29;
-      color: #dbeafe;
-      font: inherit;
-      cursor: pointer;
-      transition: background .18s ease, border-color .18s ease, transform .18s ease;
-    }
-
-    .filter-button:hover { transform: translateY(-1px); border-color: #38bdf8; }
-    .filter-button[aria-pressed="true"] { background: #075985; border-color: #38bdf8; color: white; }
-    .filter-button:focus-visible, a:focus-visible { outline: 3px solid #7dd3fc; outline-offset: 3px; }
-
-    .results-count { margin: 1.25rem 0; color: #94a3b8; font-size: .9rem; }
-
-    .project-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
-      gap: 1.1rem;
-    }
-
-    .project-card {
+      font-weight: 500;
       display: flex;
       flex-direction: column;
-      min-height: 260px;
-      padding: 1.4rem;
-      border: 1px solid #29364a;
-      border-radius: 18px;
-      background: linear-gradient(145deg, rgba(23, 32, 51, .96), rgba(15, 23, 42, .92));
-      box-shadow: 0 14px 36px rgba(0, 0, 0, .18);
-      transition: transform .2s ease, border-color .2s ease;
+      gap: 0.2rem;
+      text-align: right;
+      z-index: 10;
     }
-
-    .project-card:hover { transform: translateY(-4px); border-color: rgba(56, 189, 248, .65); }
-    .project-card h2 { margin: 0 0 .65rem; font-size: 1.25rem; }
-    .project-card p { margin: 0; color: #a7b3c5; line-height: 1.6; }
-
-    .tech-list {
+    .gallery-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 2rem 2rem;
+    }
+    .eyebrow {
+      color: #38bdf8;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+    }
+    .intro {
+      color: #94a3b8;
+      font-size: 1.05rem;
+      margin-bottom: 2rem;
+    }
+    .filter-area {
+      margin-bottom: 2rem;
+    }
+    .filter-label {
+      display: block;
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+    .filter-bar {
       display: flex;
+      gap: 0.5rem;
       flex-wrap: wrap;
-      gap: .45rem;
-      margin: 1.2rem 0;
-      padding: 0;
-      list-style: none;
     }
-
-    .tech-list li {
-      border: 1px solid rgba(56, 189, 248, .2);
-      border-radius: 999px;
-      padding: .3rem .65rem;
-      background: rgba(56, 189, 248, .08);
-      color: #bae6fd;
-      font-size: .78rem;
+    .filter-button {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      padding: 0.5rem 1.25rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
     }
-
-    .project-links { display: flex; gap: .8rem; margin-top: auto; padding-top: .5rem; }
-    .project-links a { color: #7dd3fc; font-size: .9rem; font-weight: 700; text-decoration: none; }
-    .project-links a:hover { text-decoration: underline; }
-
-    .empty-state { color: #a7b3c5; padding: 2rem 0; }
-
-    .back-link { display: inline-block; margin-top: 2.5rem; color: #7dd3fc; text-decoration: none; }
-    .back-link:hover { text-decoration: underline; }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    .filter-button:hover, .filter-button[aria-pressed="true"] {
+      background: #38bdf8;
+      color: #0f172a;
+      border-color: #38bdf8;
+    }
+    .results-count {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .project-card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 1rem;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.2s;
+    }
+    .project-card:hover {
+      border-color: #38bdf8;
+    }
+    .project-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: #f8fafc;
+    }
+    .project-desc {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+    .tech-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .tech-tag {
+      background: #1e293b;
+      color: #38bdf8;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .project-links {
+      display: flex;
+      gap: 1rem;
+    }
+    .project-links a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .project-links a:hover {
+      text-decoration: underline;
+    }
+    .back-link {
+      color: #38bdf8;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    .empty-state {
+      color: #94a3b8;
+      font-style: italic;
     }
   </style>
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
+  <div class="team-badge">
+    <span><strong>Murun</strong>: 202539440</span>
+    <span><strong>Anand</strong>: 202539455</span>
+    <span><strong>Lhamaa</strong>: 202537428</span>
+  </div>
+
   <div id="root"></div>
 
   <script type="text/babel">
     const projects = [
       {
-        title: 'Student Directory',
-        description: 'A React student directory with reusable profile cards and custom styling.',
-        techStack: ['React', 'CSS'],
-        githubLink: 'https://github.com/murun05/task11',
-        demoLink: 'https://murun05.github.io/task11/'
+        title: "Student Directory",
+        description: "A React student directory with reusable profile cards and custom styling.",
+        techStack: ["React", "CSS"],
+        githubLink: "https://github.com/murun05/web-pro",
+        demoLink: "#"
       },
       {
-        title: 'Book Search App',
-        description: 'A browser-based book search project from the Web Programming coursework.',
-        techStack: ['HTML', 'CSS', 'JavaScript'],
-        githubLink: 'https://github.com/murun05/webpro-book-search.',
-        demoLink: 'https://murun05.github.io/webpro-book-search./'
+        title: "Book Search App",
+        description: "A browser-based book search project from the Web Programming coursework.",
+        techStack: ["HTML", "CSS", "JavaScript"],
+        githubLink: "https://github.com/murun05/web-pro",
+        demoLink: "#"
       },
       {
-        title: 'Personal Portfolio',
-        description: 'A personal portfolio website presenting skills and course projects.',
-        techStack: ['HTML', 'CSS'],
-        githubLink: 'https://github.com/murun05/portfolio',
-        demoLink: 'https://murun05.github.io/portfolio/'
+        title: "Personal Portfolio",
+        description: "A personal portfolio website presenting skills and course projects.",
+        techStack: ["HTML", "CSS"],
+        githubLink: "https://github.com/murun05/web-pro",
+        demoLink: "#"
       }
     ];
 
     function ProjectCard({ title, description, techStack, githubLink, demoLink }) {
       return (
         <article className="project-card">
-          <h2>{title}</h2>
-          <p>{description}</p>
-          <ul className="tech-list" aria-label="Technology stack">
-            {techStack.map((technology) => <li key={technology}>{technology}</li>)}
-          </ul>
+          <div>
+            <h3 className="project-title">{title}</h3>
+            <p className="project-desc">{description}</p>
+            <div className="tech-tags">
+              {techStack.map((tech) => (
+                <span className="tech-tag" key={tech}>{tech}</span>
+              ))}
+            </div>
+          </div>
           <div className="project-links">
             <a href={githubLink} target="_blank" rel="noreferrer">GitHub ↗</a>
             <a href={demoLink} target="_blank" rel="noreferrer">Live demo ↗</a>
@@ -197,10 +248,11 @@
       if (items.length === 0) {
         return <p className="empty-state">No projects use this technology yet.</p>;
       }
-
       return (
         <div className="project-grid">
-          {items.map((project) => <ProjectCard key={project.title} {...project} />)}
+          {items.map((project) => (
+            <ProjectCard key={project.title} {...project} />
+          ))}
         </div>
       );
     }
@@ -217,13 +269,23 @@
           <span className="eyebrow">Web Programming · Portfolio</span>
           <h1>Project Gallery</h1>
           <p className="intro">A selection of my projects. Choose a technology to filter the gallery.</p>
+          
           <section className="filter-area" aria-label="Project filters">
             <span className="filter-label">Filter by technology</span>
-            <FilterBar technologies={technologies} selected={selectedTechnology} onSelect={setSelectedTechnology} />
+            <FilterBar
+              technologies={technologies}
+              selected={selectedTechnology}
+              onSelect={setSelectedTechnology}
+            />
           </section>
-          <p className="results-count" aria-live="polite">Showing {visibleProjects.length} {visibleProjects.length === 1 ? 'project' : 'projects'}</p>
+
+          <p className="results-count" aria-live="polite">
+            Showing {visibleProjects.length} {visibleProjects.length === 1 ? 'project' : 'projects'}
+          </p>
+
           <ProjectList items={visibleProjects} />
-          <a className="back-link" href="./">← Back to Web Pro portfolio</a>
+
+          <a className="back-link" href="https://murun05.github.io/web-pro/">← Back to Web Pro portfolio</a>
         </main>
       );
     }
