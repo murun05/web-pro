@@ -1,1 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A filterable gallery of Otgonjargal Murun's web projects." />
+  <title>Project Gallery | Otgonjargal Murun</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0b0f19;
+      color: #f8fafc;
+      font-synthesis: none;
+    }
 
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 12% 0%, rgba(56, 189, 248, .13), transparent 38rem),
+        #0b0f19;
+    }
+
+    a { color: inherit; }
+
+    .gallery-shell {
+      width: min(1080px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 4rem 0;
+    }
+
+    .eyebrow {
+      color: #38bdf8;
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: .55rem 0 .75rem;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      letter-spacing: -.055em;
+    }
+
+    .intro {
+      max-width: 620px;
+      color: #a7b3c5;
+      line-height: 1.7;
+    }
+
+    .filter-area { margin: 2rem 0 1.5rem; }
+    .filter-label { display: block; margin-bottom: .75rem; color: #a7b3c5; font-size: .9rem; }
+
+    .filter-bar { display: flex; flex-wrap: wrap; gap: .65rem; }
+
+    .filter-button {
+      border: 1px solid #29364a;
+      border-radius: 999px;
+      padding: .65rem 1rem;
+      background: #111a29;
+      color: #dbeafe;
+      font: inherit;
+      cursor: pointer;
+      transition: background .18s ease, border-color .18s ease, transform .18s ease;
+    }
+
+    .filter-button:hover { transform: translateY(-1px); border-color: #38bdf8; }
+    .filter-button[aria-pressed="true"] { background: #075985; border-color: #38bdf8; color: white; }
+    .filter-button:focus-visible, a:focus-visible { outline: 3px solid #7dd3fc; outline-offset: 3px; }
+
+    .results-count { margin: 1.25rem 0; color: #94a3b8; font-size: .9rem; }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+      gap: 1.1rem;
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 260px;
+      padding: 1.4rem;
+      border: 1px solid #29364a;
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(23, 32, 51, .96), rgba(15, 23, 42, .92));
+      box-shadow: 0 14px 36px rgba(0, 0, 0, .18);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+
+    .project-card:hover { transform: translateY(-4px); border-color: rgba(56, 189, 248, .65); }
+    .project-card h2 { margin: 0 0 .65rem; font-size: 1.25rem; }
+    .project-card p { margin: 0; color: #a7b3c5; line-height: 1.6; }
+
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      margin: 1.2rem 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .tech-list li {
+      border: 1px solid rgba(56, 189, 248, .2);
+      border-radius: 999px;
+      padding: .3rem .65rem;
+      background: rgba(56, 189, 248, .08);
+      color: #bae6fd;
+      font-size: .78rem;
+    }
+
+    .project-links { display: flex; gap: .8rem; margin-top: auto; padding-top: .5rem; }
+    .project-links a { color: #7dd3fc; font-size: .9rem; font-weight: 700; text-decoration: none; }
+    .project-links a:hover { text-decoration: underline; }
+
+    .empty-state { color: #a7b3c5; padding: 2rem 0; }
+
+    .back-link { display: inline-block; margin-top: 2.5rem; color: #7dd3fc; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const projects = [
+      {
+        title: 'Student Directory',
+        description: 'A React student directory with reusable profile cards and custom styling.',
+        techStack: ['React', 'CSS'],
+        githubLink: 'https://github.com/murun05/task11',
+        demoLink: 'https://murun05.github.io/task11/'
+      },
+      {
+        title: 'Book Search App',
+        description: 'A browser-based book search project from the Web Programming coursework.',
+        techStack: ['HTML', 'CSS', 'JavaScript'],
+        githubLink: 'https://github.com/murun05/webpro-book-search.',
+        demoLink: 'https://murun05.github.io/webpro-book-search./'
+      },
+      {
+        title: 'Personal Portfolio',
+        description: 'A personal portfolio website presenting skills and course projects.',
+        techStack: ['HTML', 'CSS'],
+        githubLink: 'https://github.com/murun05/portfolio',
+        demoLink: 'https://murun05.github.io/portfolio/'
+      }
+    ];
+
+    function ProjectCard({ title, description, techStack, githubLink, demoLink }) {
+      return (
+        <article className="project-card">
+          <h2>{title}</h2>
+          <p>{description}</p>
+          <ul className="tech-list" aria-label="Technology stack">
+            {techStack.map((technology) => <li key={technology}>{technology}</li>)}
+          </ul>
+          <div className="project-links">
+            <a href={githubLink} target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href={demoLink} target="_blank" rel="noreferrer">Live demo ↗</a>
+          </div>
+        </article>
+      );
+    }
+
+    function FilterBar({ technologies, selected, onSelect }) {
+      return (
+        <nav className="filter-bar" aria-label="Filter projects by technology">
+          {['All', ...technologies].map((technology) => (
+            <button
+              className="filter-button"
+              key={technology}
+              type="button"
+              aria-pressed={selected === technology}
+              onClick={() => onSelect(technology)}
+            >
+              {technology}
+            </button>
+          ))}
+        </nav>
+      );
+    }
+
+    function ProjectList({ items }) {
+      if (items.length === 0) {
+        return <p className="empty-state">No projects use this technology yet.</p>;
+      }
+
+      return (
+        <div className="project-grid">
+          {items.map((project) => <ProjectCard key={project.title} {...project} />)}
+        </div>
+      );
+    }
+
+    function App() {
+      const [selectedTechnology, setSelectedTechnology] = React.useState('All');
+      const technologies = [...new Set(projects.flatMap((project) => project.techStack))].sort();
+      const visibleProjects = selectedTechnology === 'All'
+        ? projects
+        : projects.filter((project) => project.techStack.includes(selectedTechnology));
+
+      return (
+        <main className="gallery-shell">
+          <span className="eyebrow">Web Programming · Portfolio</span>
+          <h1>Project Gallery</h1>
+          <p className="intro">A selection of my projects. Choose a technology to filter the gallery.</p>
+          <section className="filter-area" aria-label="Project filters">
+            <span className="filter-label">Filter by technology</span>
+            <FilterBar technologies={technologies} selected={selectedTechnology} onSelect={setSelectedTechnology} />
+          </section>
+          <p className="results-count" aria-live="polite">Showing {visibleProjects.length} {visibleProjects.length === 1 ? 'project' : 'projects'}</p>
+          <ProjectList items={visibleProjects} />
+          <a className="back-link" href="./">← Back to Web Pro portfolio</a>
+        </main>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
