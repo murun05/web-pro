@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Student directory built from a reusable React profile card." />
+    <title>Student Directory | Week 11</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0b0f19;
+        --panel: #121b2b;
+        --panel-alt: #172033;
+        --line: #2a3750;
+        --text: #f8fafc;
+        --muted: #a7b3c5;
+        --brand: #38bdf8;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(ellipse at 12% 0%, rgba(56, 189, 248, 0.13), transparent 38rem), var(--bg);
+        color: var(--text);
+        font-family: Inter, "Segoe UI", sans-serif;
+      }
+      main {
+        width: min(1000px, calc(100% - 2rem));
+        margin: 0 auto;
+        padding: 4rem 0;
+      }
+      .eyebrow {
+        color: var(--brand);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0.8rem 0 0.6rem;
+        font-size: clamp(2.2rem, 6vw, 4rem);
+        letter-spacing: -0.06em;
+      }
+      .intro {
+        max-width: 700px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      .note {
+        margin: 1.1rem 0 1.8rem;
+        padding: 0.85rem 1rem;
+        border-radius: 12px;
+        border: 1px solid rgba(244, 211, 94, 0.35);
+        background: rgba(120, 85, 0, 0.18);
+        color: #f4d989;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+        gap: 1rem;
+      }
+      .student {
+        padding: 1.3rem;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: linear-gradient(145deg, var(--panel-alt), var(--panel));
+      }
+      .student h2 {
+        margin: 0 0 1rem;
+        font-size: 1.2rem;
+      }
+      .student p {
+        margin: 0.5rem 0;
+        color: var(--muted);
+      }
+      .student strong {
+        color: #7dd3fc;
+      }
+      a {
+        display: inline-block;
+        margin-top: 2rem;
+        color: #7dd3fc;
+        text-decoration: none;
+        font-weight: 700;
+      }
+      a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const students = [
+        { id: 'owner', name: 'Otgonjargal Murun', studentId: '202539440', major: 'Computer Engineering', year: 1, gpa: 'Not provided' },
+        { id: 'demo-1', name: 'Sample Student One', studentId: 'Demo 0001', major: 'Computer Engineering', year: 1, gpa: '4.35' },
+        { id: 'demo-2', name: 'Sample Student Two', studentId: 'Demo 0002', major: 'Computer Engineering', year: 1, gpa: '4.28' }
+      ];
+
+      function StudentCard({ name, studentId, major, year, gpa }) {
+        return (
+          <article className="student">
+            <h2>{name}</h2>
+            <p><strong>ID:</strong> {studentId}</p>
+            <p><strong>Major:</strong> {major}</p>
+            <p><strong>Year:</strong> {year}</p>
+            <p><strong>GPA:</strong> {gpa}</p>
+          </article>
+        );
+      }
+
+      function App() {
+        return (
+          <main>
+            <span className="eyebrow">Week 11 · Task 11-A</span>
+            <h1>Student Directory</h1>
+            <p className="intro">
+              Three student cards are rendered from the same component. Each card receives the same five props:
+              name, studentId, major, year, and gpa.
+            </p>
+            <p className="note">
+              The repository only confirms the owner’s identity. The other student entries are clearly marked demo records.
+            </p>
+            <section className="grid" aria-label="Student directory">
+              {students.map((student) => (
+                <StudentCard key={student.id} {...student} />
+              ))}
+            </section>
+            <a href="index.html">← Back to all Week 11 tasks</a>
+          </main>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+  </body>
+</html>
