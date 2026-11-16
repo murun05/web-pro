@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Interactive reusable ProductCard React exercise." />
+  <title>Product Cards | Week 11</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    :root{color-scheme:dark;font-family:Inter,"Segoe UI",sans-serif;background:#0b0f19;color:#f8fafc}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 12% 0%,rgba(56,189,248,.13),transparent 38rem),#0b0f19}main{width:min(1100px,calc(100% - 2rem));margin:auto;padding:3.5rem 0}.eyebrow{color:#38bdf8;font-size:.78rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase}h1{font-size:clamp(2.3rem,6vw,4rem);letter-spacing:-.06em;margin:.6rem 0}.intro{max-width:680px;color:#a7b3c5;line-height:1.7}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:1rem;margin-top:2rem}.product{position:relative;overflow:hidden;padding:1.35rem;border:1px solid #29364a;border-radius:18px;background:linear-gradient(145deg,#172033,#0f172a);box-shadow:0 16px 30px #0003}.product h2{margin:.8rem 0;font-size:1.25rem}.top,.bottom{display:flex;align-items:center;justify-content:space-between;gap:.75rem}.label{color:#94a3b8;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.price{font-size:1.7rem;font-weight:800;letter-spacing:-.06em}.rating{color:#f8d76c}.stock{padding:.35rem .65rem;border-radius:999px;font-size:.75rem;font-weight:800}.available{color:#86efac;background:#052e1a;border:1px solid #166534}.unavailable{color:#fca5a5;background:#3b1111;border:1px solid #7f1d1d}a{display:inline-block;margin-top:2rem;color:#7dd3fc;text-decoration:none;font-weight:700}a:hover{text-decoration:underline}
+  </style>
+</head>
+<body><div id="root"></div>
+<script type="text/babel">
+const products=[
+ {id:'earbuds',name:'Wireless Earbuds',price:89000,rating:4.5,inStock:true},
+ {id:'keyboard',name:'Compact Keyboard',price:69000,rating:4.2,inStock:false},
+ {id:'hub',name:'USB-C Hub',price:35000,rating:4.0,inStock:true},
+ {id:'ssd',name:'Portable SSD 1TB',price:119000,rating:4.8,inStock:false},
+ {id:'monitor',name:'27-inch Monitor',price:249000,rating:4.7,inStock:true},
+ {id:'webcam',name:'1080p Webcam',price:49000,rating:4.3,inStock:false}
+];
+function ProductCard({name,price,rating,inStock}){return <article className="product"><div className="top"><span className="label">Sample product</span><span className={`stock ${inStock?'available':'unavailable'}`}>{inStock?'In Stock':'Out of Stock'}</span></div><h2>{name}</h2><div className="bottom"><span className="price">{price.toLocaleString('ko-KR')}원</span><span className="rating" aria-label={`${rating} out of 5 stars`}>★ {rating}</span></div></article>}
+function App(){return <main><span className="eyebrow">Week 11 · Exercise 01</span><h1>Product Cards</h1><p className="intro">One reusable component receives name, price, rating, and stock props. Sample products show KRW formatting and both stock states.</p><section className="grid" aria-label="Sample products">{products.map(product=><ProductCard key={product.id} {...product}/>)}</section><a href="index.html">← All Week 11 tasks</a></main>}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script></body></html>
