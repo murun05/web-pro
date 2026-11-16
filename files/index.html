@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Week 11 coursework tasks and demos linked from the project files index." />
+    <title>Week 11 Files | Otgonjargal Murun</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0b0f19;
+        --panel: rgba(23, 32, 51, 0.72);
+        --line: rgba(255,255,255,0.08);
+        --text: #f8fafc;
+        --muted: #a7b3c5;
+        --accent: #38bdf8;
+        --accent-strong: #0369a1;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        padding: 2.5rem 1.25rem;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08), transparent 40%),
+          radial-gradient(circle at 85% 85%, rgba(99, 102, 241, 0.08), transparent 40%),
+          var(--bg);
+        color: var(--text);
+      }
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .hero {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 2rem 2.2rem;
+        box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+      }
+      .badge {
+        display: inline-block;
+        padding: .35rem .8rem;
+        border-radius: 999px;
+        background: rgba(56, 189, 248, 0.12);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        color: var(--accent);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 1rem 0 .8rem;
+        font-size: clamp(2rem, 5vw, 3rem);
+        letter-spacing: -0.04em;
+      }
+      .lead {
+        margin: 0;
+        max-width: 760px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 1.35rem;
+        display: flex;
+        flex-direction: column;
+        gap: .8rem;
+      }
+      .meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .75rem;
+        color: #9fb0c7;
+        font-size: .72rem;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        font-weight: 800;
+      }
+      .status {
+        color: #86efac;
+      }
+      .card h2 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .8rem;
+        margin-top: auto;
+      }
+      a {
+        color: #7dd3fc;
+        font-weight: 700;
+        text-decoration: none;
+      }
+      a:hover { text-decoration: underline; }
+      .back {
+        display: inline-block;
+        margin-top: 2rem;
+      }
+      @media (max-width: 600px) {
+        .hero { padding: 1.3rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="hero">
+        <span class="badge">Week 11</span>
+        <h1>React Coursework Tasks</h1>
+        <p class="lead">
+          Reusable components, props, lists, conditional rendering, and a portfolio-style gallery. This file gathers the Week 11 tasks in a simple index for fast access.
+        </p>
+      </header>
+
+      <main class="grid" aria-label="Week 11 task links">
+        <article class="card">
+          <div class="meta"><span>01 / Product</span><span class="status">Implemented</span></div>
+          <h2>ProductCard</h2>
+          <p>Reusable product cards with KRW prices, rating values, and stock states.</p>
+          <div class="links">
+            <a href="../week11/product-catalog.html">Open demo</a>
+            <a href="../week11/ProductCard.jsx">View source</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="meta"><span>02 / Catalog</span><span class="status">Implemented</span></div>
+          <h2>Course Catalog</h2>
+          <p>Course list rendered from an array with stable keys and required/elective badges.</p>
+          <div class="links">
+            <a href="../week11/course-catalog.html">Open demo</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="meta"><span>03 / Practice</span><span class="status">Implemented</span></div>
+          <h2>Defaults, Lists &amp; Children</h2>
+          <p>Profile editor, demo inbox, and practice checklist with composed cards.</p>
+          <div class="links">
+            <a href="../week11/practice.html">Open demo</a>
+            <a href="../week11/task1.html">Task 1</a>
+            <a href="../week11/task2.html">Task 2</a>
+            <a href="../week11/task3.html">Task 3</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="meta"><span>04 / 11-A</span><span class="status">Implemented</span></div>
+          <h2>Student Directory</h2>
+          <p>Three student profiles rendered from one reusable component using five props.</p>
+          <div class="links">
+            <a href="../week11/student-directory.html">Open demo</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="meta"><span>05 / Gallery</span><span class="status">Implemented</span></div>
+          <h2>Portfolio Gallery</h2>
+          <p>Filterable project cards with technologies, demo links, and project detail actions.</p>
+          <div class="links">
+            <a href="../week11/homework.html">Open demo</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="meta"><span>06 / Components</span><span class="status">Implemented</span></div>
+          <h2>Component Lab</h2>
+          <p>Greetings, keyed list rendering, alerts, and a sample pass/fail grade board.</p>
+          <div class="links">
+            <a href="../week11/component-lab.html">Open demo</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="meta"><span>07 / Portfolio</span><span class="status">Implemented</span></div>
+          <h2>Selected Work</h2>
+          <p>Portfolio-task React demo with filter chips and detail dialogs for selected work.</p>
+          <div class="links">
+            <a href="../week11/portfolio-react.html">Open demo</a>
+          </div>
+        </article>
+      </main>
+
+      <a class="back" href="../index.html">← Back to main Web Pro portfolio</a>
+    </div>
+  </body>
+</html>
