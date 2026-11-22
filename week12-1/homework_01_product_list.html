@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Homework 1 — Campus Store</title>
+  <style>
+    body { margin: 0; background: #f8fafc; color: #172033; font-family: Georgia, serif; }
+    header { padding: 32px; color: white; background: #1e3a5f; }
+    .catalog { display: grid; grid-template-columns: repeat(auto-fit, 210px); gap: 20px; padding: 32px; }
+    article { overflow: hidden; border: 1px solid #dbe3ef; border-radius: 14px; background: white; }
+    img { width: 100%; height: 150px; object-fit: cover; }
+    article div { padding: 14px; }
+  </style>
+</head>
+<body>
+  <header><h1>Gachon Campus Store</h1></header>
+  <main class="catalog" id="catalog"></main>
+  <script>
+    const items = [
+      ['Notebook', 3200, 'notebook'], ['Pencil Set', 1800, 'pencils'], ['Umbrella', 9000, 'umbrella'],
+      ['Planner', 6500, 'planner'], ['Tumbler', 12000, 'bottle'], ['Badge', 2500, 'badge']
+    ].map(([name, price, text], index) => ({ sku: index + 1, name, price, picture: `https://placehold.co/420x300/20354a/ffffff?text=${text}` }));
+
+    document.getElementById('catalog').innerHTML = items.map((item) => `<article>
+      <img src="${item.picture}" alt="${item.name}">
+      <div><h2>${item.name}</h2><p>${item.price.toLocaleString('ko-KR')}원</p></div>
+    </article>`).join('');
+  </script>
+</body>
+</html>

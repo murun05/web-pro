@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Homework 2 — Basket Controls</title>
+  <style>
+    body { max-width: 900px; margin: 50px auto; font-family: system-ui; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .card { border: 1px solid #d5dae3; border-radius: 8px; padding: 12px; }
+    .card button { margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Basket</h1>
+  <div class="grid" id="store"></div>
+  <h2>Selected IDs</h2><pre id="state"></pre>
+  <script>
+    const inventory = [
+      { id: 101, title: 'Glasses', cost: 15 }, { id: 102, title: 'Mug', cost: 8 },
+      { id: 103, title: 'Mouse', cost: 24 }, { id: 104, title: 'Keyboard', cost: 38 }
+    ];
+    let basket = [];
+
+    function putInBasket(id) {
+      if (!basket.includes(id)) basket = [...basket, id];
+      draw();
+    }
+    function takeOut(id) {
+      basket = basket.filter((selected) => selected !== id);
+      draw();
+    }
+    function draw() {
+      document.getElementById('store').innerHTML = inventory.map((product) => {
+        const chosen = basket.includes(product.id);
+        return `<article class="card"><h3>${product.title}</h3><p>$${product.cost}</p>
+          <button onclick="putInBasket(${product.id})" ${chosen ? 'disabled' : ''}>Add</button>
+          <button onclick="takeOut(${product.id})" ${chosen ? '' : 'disabled'}>Remove</button></article>`;
+      }).join('');
+      document.getElementById('state').textContent = JSON.stringify(basket);
+    }
+    draw();
+  </script>
+</body>
+</html>

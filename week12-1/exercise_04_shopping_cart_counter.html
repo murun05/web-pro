@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercise 4 — Snack Counter</title>
+  <style>
+    body { max-width: 680px; margin: 60px auto; font-family: sans-serif; }
+    .snack { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #e5e7eb; }
+    .stepper { display: flex; gap: 10px; align-items: center; }
+  </style>
+</head>
+<body>
+  <h1>Snack Selection</h1>
+  <section id="snacks"></section>
+  <h2 id="sum">Total: ₩0</h2>
+  <script>
+    const menu = [
+      { code: 'A', name: 'Hotteok', won: 3000 },
+      { code: 'B', name: 'Tteokbokki', won: 5000 },
+      { code: 'C', name: 'Fish cake', won: 2500 }
+    ];
+    const selected = { A: 0, B: 0, C: 0 };
+    const money = (n) => `₩${n.toLocaleString('ko-KR')}`;
+
+    function draw() {
+      document.getElementById('snacks').innerHTML = menu.map((food) => `<article class="snack">
+        <div><strong>${food.name}</strong><br>${money(food.won)}</div>
+        <div class="stepper">
+          <button data-code="${food.code}" data-delta="-1">−</button>
+          <b>${selected[food.code]}</b>
+          <button data-code="${food.code}" data-delta="1">+</button>
+        </div>
+      </article>`).join('');
+      const total = menu.reduce((sum, food) => sum + food.won * selected[food.code], 0);
+      document.getElementById('sum').textContent = `Total: ${money(total)}`;
+    }
+
+    document.getElementById('snacks').addEventListener('click', (event) => {
+      if (!event.target.dataset.code) return;
+      const code = event.target.dataset.code;
+      selected[code] = Math.max(0, selected[code] + Number(event.target.dataset.delta));
+      draw();
+    });
+    draw();
+  </script>
+</body>
+</html>

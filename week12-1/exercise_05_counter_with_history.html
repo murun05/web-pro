@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercise 5 — Number Timeline</title>
+  <style>
+    body { max-width: 560px; margin: 70px auto; font-family: monospace; }
+    .panel { border: 2px solid #111827; padding: 24px; }
+    output { display: block; font-size: 64px; }
+    .actions { display: flex; gap: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Number Timeline</h1>
+  <main class="panel">
+    <output id="value">10</output>
+    <div class="actions">
+      <button data-mode="down">−5</button>
+      <button data-mode="up">+5</button>
+      <button data-mode="reset">Reset</button>
+      <button id="back" data-mode="back">Undo</button>
+    </div>
+    <p>Timeline: <span id="timeline"></span></p>
+  </main>
+  <script>
+    let number = 10;
+    let timeline = [10];
+
+    function commit(next) {
+      number = next;
+      timeline = [...timeline, next].slice(-6);
+      paint();
+    }
+    function paint() {
+      document.getElementById('value').textContent = number;
+      document.getElementById('timeline').textContent = timeline.join(' → ');
+      document.getElementById('back').disabled = timeline.length < 2;
+    }
+    document.querySelector('.actions').onclick = (event) => {
+      if (!event.target.dataset.mode) return;
+      const modes = { down: () => commit(number - 5), up: () => commit(number + 5), reset: () => commit(10), back: () => {
+        if (timeline.length > 1) { timeline = timeline.slice(0, -1); number = timeline.at(-1); paint(); }
+      } };
+      modes[event.target.dataset.mode]();
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercise 2 — Study Checklist</title>
+  <style>
+    body { max-width: 600px; margin: 60px auto; font-family: Arial, sans-serif; }
+    .editor { display: flex; gap: 8px; }
+    input { flex: 1; padding: 10px; }
+    button { padding: 8px 12px; }
+    ol { padding: 0; list-style: none; }
+    li { display: flex; justify-content: space-between; margin: 8px 0; padding: 10px; background: #eef2ff; }
+  </style>
+</head>
+<body>
+  <h1>오늘의 학습 목록</h1>
+  <form class="editor" id="study-form">
+    <input id="study-input" required placeholder="새 학습 항목">
+    <button>추가</button>
+  </form>
+  <ol id="study-list"></ol>
+  <script>
+    let checklist = [];
+    const input = document.getElementById('study-input');
+
+    function paint() {
+      document.getElementById('study-list').innerHTML = checklist.map((item) => `
+        <li><span>${item.label}</span><button type="button" data-remove="${item.key}">삭제</button></li>`).join('');
+    }
+
+    document.getElementById('study-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      checklist = [...checklist, { key: crypto.randomUUID(), label: input.value.trim() }];
+      input.value = '';
+      paint();
+    });
+
+    document.getElementById('study-list').addEventListener('click', (event) => {
+      if (!event.target.dataset.remove) return;
+      checklist = checklist.filter((item) => item.key !== event.target.dataset.remove);
+      paint();
+    });
+  </script>
+</body>
+</html>

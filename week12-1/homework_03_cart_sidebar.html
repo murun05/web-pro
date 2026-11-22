@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Homework 3 — Mini Cart Drawer</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    .page { display: grid; grid-template-columns: 1fr 300px; min-height: 100vh; }
+    .shop { padding: 30px; }
+    .drawer { position: sticky; top: 0; height: 100vh; padding: 24px; background: #f1f5f9; box-sizing: border-box; }
+    .shop button { padding: 8px 12px; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="shop"><h1>Stationery</h1><div id="items"></div></section>
+    <aside class="drawer" id="drawer"></aside>
+  </main>
+  <script>
+    const goods = [
+      { id: 1, name: 'Dot Grid Notebook', price: 5500 }, { id: 2, name: 'Fineliner', price: 2200 },
+      { id: 3, name: 'Desk Pad', price: 8000 }, { id: 4, name: 'Binder', price: 4300 }, { id: 5, name: 'Marker Set', price: 6900 }
+    ];
+    let cart = [];
+
+    function addGoods(id) {
+      const match = goods.find((good) => good.id === id);
+      cart = [...cart, { ...match }];
+      render();
+    }
+    function Drawer(items) {
+      const bill = items.reduce((sum, item) => sum + item.price, 0);
+      return `<h2>Cart (${items.length})</h2>
+        ${items.length ? `<ul>${items.map((item) => `<li>${item.name} — ₩${item.price.toLocaleString()}</li>`).join('')}</ul>` : '<p>Your drawer is empty.</p>'}
+        <hr><strong>Total ₩${bill.toLocaleString()}</strong>`;
+    }
+    function render() {
+      document.getElementById('items').innerHTML = goods.map((good) => `<p><b>${good.name}</b> · ₩${good.price.toLocaleString()} <button data-add="${good.id}">Add</button></p>`).join('');
+      document.getElementById('drawer').innerHTML = Drawer(cart);
+    }
+    document.querySelector('.shop').addEventListener('click', (event) => {
+      if (event.target.dataset.add) addGoods(Number(event.target.dataset.add));
+    });
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Homework 5 — Market Component</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #fbfaf7; font-family: system-ui; }
+    #app { max-width: 1100px; margin: auto; padding: 32px 20px; }
+    .market { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 24px; }
+    .catalog { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+    .card { padding: 12px; border: 1px solid #ded9cc; border-radius: 10px; background: white; }
+    .card img { width: 100%; height: 120px; object-fit: cover; }
+    button { border: 0; border-radius: 6px; padding: 7px 10px; background: #9b5de5; color: white; cursor: pointer; }
+    button.light { background: #ede9fe; color: #5b21b6; }
+    .receipt { position: sticky; top: 20px; height: fit-content; padding: 18px; border-radius: 12px; background: #302b27; color: white; }
+    .line { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <main id="app"></main>
+  <script>
+    const products = [
+      { id: 11, name: 'Rice', price: 4800, pic: 'https://placehold.co/300x220/e7cba9/5a431f?text=Rice' },
+      { id: 12, name: 'Milk', price: 3200, pic: 'https://placehold.co/300x220/dde8f5/2a4d69?text=Milk' },
+      { id: 13, name: 'Egg', price: 6500, pic: 'https://placehold.co/300x220/f2df8a/645b20?text=Egg' },
+      { id: 14, name: 'Bread', price: 3900, pic: 'https://placehold.co/300x220/c99970/5f3d25?text=Bread' },
+      { id: 15, name: 'Apple', price: 2800, pic: 'https://placehold.co/300x220/e6a0a0/742f35?text=Apple' },
+      { id: 16, name: 'Carrot', price: 2400, pic: 'https://placehold.co/300x220/efa76f/65351d?text=Carrot' }
+    ];
+    let basket = [];
+
+    function replaceBasket(updater) { basket = updater(basket); render(); }
+    function add(id) { replaceBasket((old) => old.some((x) => x.id === id)
+      ? old.map((x) => x.id === id ? { ...x, qty: x.qty + 1 } : x)
+      : [...old, { id, qty: 1 }]); }
+    function remove(id) { replaceBasket((old) => old.filter((x) => x.id !== id)); }
+    function quantity(id, delta) { replaceBasket((old) => old.map((x) => x.id === id ? { ...x, qty: x.qty + delta } : x).filter((x) => x.qty > 0)); }
+    const won = (n) => `₩${n.toLocaleString('ko-KR')}`;
+    const find = (id) => products.find((p) => p.id === id);
+
+    function ProductCard(product) {
+      const element = document.createElement('article');
+      element.className = 'card';
+      element.innerHTML = `<img src="${product.pic}" alt="${product.name}"><h3>${product.name}</h3><p>${won(product.price)}</p><button>Add</button>`;
+      element.querySelector('button').onclick = () => add(product.id);
+      return element;
+    }
+    function Catalog() {
+      const node = document.createElement('section'); node.className = 'catalog';
+      products.forEach((p) => node.append(ProductCard(p))); return node;
+    }
+    function Receipt() {
+      const node = document.createElement('aside'); node.className = 'receipt';
+      node.innerHTML = `<h2>Basket</h2>`;
+      if (!basket.length) node.insertAdjacentHTML('beforeend', '<p>Nothing yet.</p>');
+      basket.forEach((entry) => {
+        const product = find(entry.id);
+        const line = document.createElement('div'); line.className = 'line';
+        line.innerHTML = `<span>${product.name}<br>${entry.qty} × ${won(product.price)}</span>
+          <span><button class="light" data-minus="${entry.id}">−</button> <button class="light" data-plus="${entry.id}">+</button></span>
+          <button data-remove="${entry.id}">×</button>`;
+        node.append(line);
+      });
+      const total = basket.reduce((sum, entry) => sum + find(entry.id).price * entry.qty, 0);
+      node.insertAdjacentHTML('beforeend', `<h3>Total: ${won(total)}</h3>`);
+      if (basket.length) node.insertAdjacentHTML('beforeend', '<button id="clear">Clear basket</button>');
+      node.querySelectorAll('[data-minus]').forEach((b) => b.onclick = () => quantity(Number(b.dataset.minus), -1));
+      node.querySelectorAll('[data-plus]').forEach((b) => b.onclick = () => quantity(Number(b.dataset.plus), 1));
+      node.querySelectorAll('[data-remove]').forEach((b) => b.onclick = () => remove(Number(b.dataset.remove)));
+      const clear = node.querySelector('#clear'); if (clear) clear.onclick = () => replaceBasket(() => []);
+      return node;
+    }
+    function Market() {
+      const node = document.createElement('main'); node.className = 'market';
+      node.append(Catalog(), Receipt()); return node;
+    }
+    function render() { document.getElementById('app').replaceChildren(Market()); }
+    render();
+  </script>
+</body>
+</html>

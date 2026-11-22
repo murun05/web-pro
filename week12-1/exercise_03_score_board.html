@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercise 3 — Team Points</title>
+  <style>
+    body { max-width: 520px; margin: 60px auto; font-family: system-ui; }
+    .team { display: grid; grid-template-columns: 1fr auto auto auto; align-items: center; gap: 8px; padding: 12px 0; border-bottom: 1px solid #ddd; }
+    .team button { width: 36px; height: 36px; }
+    #grand-total { color: #7c3aed; text-align: right; }
+  </style>
+</head>
+<body>
+  <h1>Team Scoreboard</h1>
+  <main id="board"></main>
+  <script>
+    function TeamRow({ title, points, change }) {
+      const row = document.createElement('div');
+      row.className = 'team';
+      row.innerHTML = `<strong>${title}</strong><button>−</button><span>${points}</span><button>+</button>`;
+      row.children[1].onclick = () => change(-1);
+      row.children[3].onclick = () => change(1);
+      return row;
+    }
+
+    function setupBoard() {
+      let blue = 0;
+      let green = 0;
+      const root = document.getElementById('board');
+      const refresh = () => {
+        root.replaceChildren(
+          TeamRow({ title: 'Blue Team', points: blue, change: (n) => { blue += n; refresh(); } }),
+          TeamRow({ title: 'Green Team', points: green, change: (n) => { green += n; refresh(); } }),
+        );
+        const total = document.createElement('h2');
+        total.id = 'grand-total';
+        total.textContent = `Combined points: ${blue + green}`;
+        root.append(total);
+      };
+      refresh();
+    }
+    setupBoard();
+  </script>
+</body>
+</html>
