@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,9 +20,9 @@
 
     function drawNotice() {
       root.innerHTML = `<section class="notice">
-        <button type="button" aria-expanded="${expanded}">${expanded ? '닫기' : '자세히'}</button>
-        <h2>웹 프로그래밍 실습 안내</h2>
-        ${expanded ? '<p>매주 제공되는 예제를 직접 수정하고 GitHub에 제출하세요. 상태 변화에 따라 화면이 즉시 갱신되는지 확인합니다.</p>' : ''}
+        <button type="button" aria-expanded="${expanded}">${expanded ? 'Close' : 'Details'}</button>
+        <h2>Web Programming Practice Notice</h2>
+        ${expanded ? '<p>Modify the examples provided each week and submit them to GitHub. Check that the screen updates immediately as the state changes.</p>' : ''}
       </section>`;
       root.querySelector('button').onclick = () => {
         expanded = !expanded;
