@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,10 +14,10 @@
   </style>
 </head>
 <body>
-  <h1>오늘의 학습 목록</h1>
+  <h1>Today's Study List</h1>
   <form class="editor" id="study-form">
-    <input id="study-input" required placeholder="새 학습 항목">
-    <button>추가</button>
+   <input id="study-input" required placeholder="New study item">
+    <button>Add</button>
   </form>
   <ol id="study-list"></ol>
   <script>
@@ -26,8 +26,8 @@
 
     function paint() {
       document.getElementById('study-list').innerHTML = checklist.map((item) => `
-        <li><span>${item.label}</span><button type="button" data-remove="${item.key}">삭제</button></li>`).join('');
-    }
+          <li><span>${item.label}</span><button type="button" data-remove="${item.key}">Remove</button></li>`).join('');   
+    } 
 
     document.getElementById('study-form').addEventListener('submit', (event) => {
       event.preventDefault();
