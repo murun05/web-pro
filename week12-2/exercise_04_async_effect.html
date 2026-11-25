@@ -1,0 +1,7 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Async Effect · Week 12-2</title><link rel="stylesheet" href="style.css"></head><body><main class="wrap page"><a class="back" href="./">← Week 12-2 home</a><p class="eyebrow">EXERCISE 04 / ASYNC</p><h1>Async/await inside an effect</h1><p class="lead">The effect itself stays synchronous; define and invoke the async function inside it.</p><section class="demo"><button id="reload">Fetch a random post</button><div id="result" class="status" aria-live="polite">Ready.</div></section><pre>useEffect(() => {
+  async function load() {
+    try { const response = await fetch(url); setData(await response.json()); }
+    catch (error) { setError(error.message); }
+  }
+  load();
+}, []);</pre><footer>Otgonjargal Murun · Week 12-2</footer></main><script>const out=document.querySelector('#result');async function load(){out.textContent='Loading…';try{const id=1+Math.floor(Math.random()*10),response=await fetch('https://jsonplaceholder.typicode.com/posts/'+id);if(!response.ok)throw Error('Request failed: '+response.status);const post=await response.json();out.innerHTML=`<article class="box"><h2>${post.title}</h2><p>${post.body}</p></article>`}catch(error){out.innerHTML=`<p class="error">${error.message}</p>`}}document.querySelector('#reload').onclick=load;load();</script></body></html>
