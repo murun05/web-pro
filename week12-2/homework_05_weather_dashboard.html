@@ -1,1 +1,134 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Weather Dashboard · Week 12-2</title><link rel="stylesheet" href="style.css"></head><body><main class="wrap page"><a class="back" href="./">← Week 12-2 home</a><p class="eyebrow">HOMEWORK 05 / COMPLETE PROJECT</p><h1>Weather dashboard</h1><p class="lead">Search a city or use your location. Current conditions and a four-day forecast are fetched from Open-Meteo.</p><section class="demo"><form id="form" class="row"><label for="city">City</label><input id="city" placeholder="e.g. Jeju"><button>Search</button><button type="button" class="secondary" id="geo">Use location</button></form><div id="status" class="status" aria-live="polite"></div><div id="current"></div><div id="forecast" class="forecast"></div></section><footer>Otgonjargal Murun · Week 12-2</footer></main><script>const codes={0:['Clear sky','☀️'],1:['Mainly clear','🌤️'],2:['Partly cloudy','⛅'],3:['Overcast','☁️'],45:['Fog','🌫️'],48:['Rime fog','🌫️'],51:['Light drizzle','🌦️'],53:['Drizzle','🌦️'],55:['Heavy drizzle','🌧️'],56:['Freezing drizzle','🌧️'],57:['Heavy freezing drizzle','🌧️'],61:['Light rain','🌦️'],63:['Rain','🌧️'],65:['Heavy rain','🌧️'],66:['Freezing rain','🌧️'],67:['Heavy freezing rain','🌧️'],71:['Light snow','🌨️'],73:['Snow','🌨️'],75:['Heavy snow','❄️'],77:['Snow grains','🌨️'],80:['Rain showers','🌦️'],81:['Moderate showers','🌧️'],82:['Heavy showers','⛈️'],85:['Snow showers','🌨️'],86:['Heavy snow showers','❄️'],95:['Thunderstorm','⛈️'],96:['Thunderstorm with hail','⛈️'],99:['Thunderstorm with heavy hail','⛈️']};let geoController,weatherController;const status=document.querySelector('#status');async function showWeather(place){weatherController?.abort();weatherController=new AbortController();status.textContent=`Loading weather for ${place.name}…`;document.querySelector('#current').replaceChildren();document.querySelector('#forecast').replaceChildren();try{const url=`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&forecast_days=4&timezone=auto`;const r=await fetch(url,{signal:weatherController.signal});if(!r.ok)throw Error('Weather service returned '+r.status);const d=await r.json(),c=d.current,[desc,icon]=codes[c.weather_code]||['Unknown conditions','❔'];status.textContent=place.country?`${place.name}, ${place.country}`:place.name;document.querySelector('#current').innerHTML=`<article class="weather"><span class="temp">${icon}</span><div><h2>${place.name}</h2><p class="temp">${Math.round(c.temperature_2m)}${d.current_units.temperature_2m}</p><p>${desc}</p><p>Feels like ${Math.round(c.apparent_temperature)}° · humidity ${c.relative_humidity_2m}% · wind ${c.wind_speed_10m} km/h</p></div></article>`;document.querySelector('#forecast').innerHTML=d.daily.time.map((day,i)=>{const [text,emoji]=codes[d.daily.weather_code[i]]||['Unknown','❔'];return `<article class="day"><b>${new Date(day+'T12:00:00').toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric'})}</b><p class="temp">${emoji}</p><p>${Math.round(d.daily.temperature_2m_max[i])}° / ${Math.round(d.daily.temperature_2m_min[i])}°</p><p>${text}</p></article>`}).join('')}catch(e){if(e.name!=='AbortError')status.innerHTML=`<span class="error">${e.message}</span>`}}document.querySelector('#form').onsubmit=async e=>{e.preventDefault();geoController?.abort();geoController=new AbortController();const name=document.querySelector('#city').value.trim();if(!name){status.textContent='Enter a city name.';return}status.textContent='Searching places…';try{const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(name)}&count=1&language=en&format=json`,{signal:geoController.signal});if(!r.ok)throw Error('City lookup failed.');const d=await r.json();if(!d.results?.length)throw Error('No matching city found.');showWeather(d.results[0])}catch(e){if(e.name!=='AbortError')status.innerHTML=`<span class="error">${e.message}</span>`}};document.querySelector('#geo').onclick=()=>{status.textContent='Requesting location…';if(!navigator.geolocation){showWeather({name:'Seoul (fallback)',latitude:37.57,longitude:126.98});return}navigator.geolocation.getCurrentPosition(p=>showWeather({name:'Your location',latitude:p.coords.latitude,longitude:p.coords.longitude}),()=>showWeather({name:'Seoul (fallback)',latitude:37.57,longitude:126.98}),{timeout:8000})};showWeather({name:'Seoul',country:'South Korea',latitude:37.57,longitude:126.98})</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weather Dashboard · Week 12-2</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap page">
+    <a class="back" href="./">← Week 12-2 home</a>
+    <p class="eyebrow">HOMEWORK 05 / COMPLETE PROJECT</p>
+    <h1>Weather dashboard</h1>
+    <p class="lead">Search a city, enter coordinates, or use your location. Current conditions and a four-day forecast are fetched from Open-Meteo.</p>
+
+    <section class="demo">
+      <form id="form" class="row">
+        <label for="city">City</label>
+        <input id="city" placeholder="e.g. Jeju" autocomplete="address-level2">
+        <span aria-hidden="true">or</span>
+        <label for="latitude">Latitude</label>
+        <input id="latitude" type="number" min="-90" max="90" step="any" placeholder="e.g. 37.57" inputmode="decimal">
+        <label for="longitude">Longitude</label>
+        <input id="longitude" type="number" min="-180" max="180" step="any" placeholder="e.g. 126.98" inputmode="decimal">
+        <button type="submit">Search</button>
+        <button type="button" class="secondary" id="geo">Use location</button>
+      </form>
+      <p class="muted">Enter a city name or both coordinates (latitude: −90 to 90; longitude: −180 to 180).</p>
+      <div id="status" class="status" aria-live="polite"></div>
+      <div id="current"></div>
+      <div id="forecast" class="forecast"></div>
+    </section>
+    <footer>Otgonjargal Murun · Week 12-2</footer>
+  </main>
+
+  <script>
+    const codes = {
+      0: ['Clear sky', '☀️'], 1: ['Mainly clear', '🌤️'], 2: ['Partly cloudy', '⛅'], 3: ['Overcast', '☁️'],
+      45: ['Fog', '🌫️'], 48: ['Rime fog', '🌫️'], 51: ['Light drizzle', '🌦️'], 53: ['Drizzle', '🌦️'],
+      55: ['Heavy drizzle', '🌧️'], 56: ['Freezing drizzle', '🌧️'], 57: ['Heavy freezing drizzle', '🌧️'],
+      61: ['Light rain', '🌧️'], 63: ['Rain', '🌧️'], 65: ['Heavy rain', '🌧️'], 66: ['Freezing rain', '🌧️'],
+      67: ['Heavy freezing rain', '🌧️'], 71: ['Light snow', '🌨️'], 73: ['Snow', '🌨️'], 75: ['Heavy snow', '🌨️'],
+      77: ['Snow grains', '🌨️'], 80: ['Rain showers', '🌦️'], 81: ['Moderate showers', '🌦️'],
+      82: ['Heavy showers', '🌧️'], 85: ['Snow showers', '🌨️'], 86: ['Heavy snow showers', '🌨️'],
+      95: ['Thunderstorm', '⛈️'], 96: ['Thunderstorm with hail', '⛈️'], 99: ['Thunderstorm with heavy hail', '⛈️']
+    };
+    let geoController, weatherController;
+    const status = document.querySelector('#status');
+    const current = document.querySelector('#current');
+    const forecast = document.querySelector('#forecast');
+    const form = document.querySelector('#form');
+    const cityInput = document.querySelector('#city');
+    const latitudeInput = document.querySelector('#latitude');
+    const longitudeInput = document.querySelector('#longitude');
+
+    async function showWeather(place) {
+      weatherController?.abort();
+      weatherController = new AbortController();
+      status.textContent = `Loading weather for ${place.name}…`;
+      current.replaceChildren();
+      forecast.replaceChildren();
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&forecast_days=4&timezone=auto`;
+        const response = await fetch(url, { signal: weatherController.signal });
+        if (!response.ok) throw new Error(`Weather service returned ${response.status}.`);
+        const data = await response.json();
+        const now = data.current;
+        const [description, icon] = codes[now.weather_code] || ['Unknown conditions', '🌡️'];
+        status.textContent = place.country ? `${place.name}, ${place.country}` : place.name;
+        current.innerHTML = `<article class="weather"><span class="temp">${icon}</span><div><h2>${place.name}</h2><p class="temp">${Math.round(now.temperature_2m)}${data.current_units.temperature_2m}</p><p>${description}</p><p>Feels like ${Math.round(now.apparent_temperature)}° · ${now.relative_humidity_2m}% humidity · wind ${now.wind_speed_10m} km/h</p><p class="muted">Latitude ${Number(place.latitude).toFixed(4)} · Longitude ${Number(place.longitude).toFixed(4)}</p></div></article>`;
+        forecast.innerHTML = data.daily.time.map((day, index) => {
+          const [text, emoji] = codes[data.daily.weather_code[index]] || ['Unknown', '🌡️'];
+          const date = new Date(`${day}T12:00:00`).toLocaleDateString('en', { weekday: 'short', month: 'short', day: 'numeric' });
+          return `<article class="day"><b>${date}</b><p class="temp">${emoji}</p><p>${Math.round(data.daily.temperature_2m_max[index])}° / ${Math.round(data.daily.temperature_2m_min[index])}°</p><p>${text}</p></article>`;
+        }).join('');
+      } catch (error) {
+        if (error.name !== 'AbortError') status.innerHTML = `<span class="error">${error.message}</span>`;
+      }
+    }
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      geoController?.abort();
+      geoController = new AbortController();
+      const city = cityInput.value.trim();
+      const latitudeText = latitudeInput.value.trim();
+      const longitudeText = longitudeInput.value.trim();
+      if (latitudeText || longitudeText) {
+        if (!latitudeText || !longitudeText) {
+          status.textContent = 'Enter both latitude and longitude.';
+          return;
+        }
+        const latitude = Number(latitudeText);
+        const longitude = Number(longitudeText);
+        if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90 || !Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
+          status.textContent = 'Coordinates are out of range. Latitude must be −90 to 90 and longitude −180 to 180.';
+          return;
+        }
+        showWeather({ name: city || 'Selected coordinates', latitude, longitude });
+        return;
+      }
+      if (!city) {
+        status.textContent = 'Enter a city name or both coordinates.';
+        return;
+      }
+      status.textContent = 'Searching places…';
+      try {
+        const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`, { signal: geoController.signal });
+        if (!response.ok) throw new Error('City lookup failed.');
+        const result = await response.json();
+        if (!result.results?.length) throw new Error('No matching city found.');
+        showWeather(result.results[0]);
+      } catch (error) {
+        if (error.name !== 'AbortError') status.innerHTML = `<span class="error">${error.message}</span>`;
+      }
+    });
+
+    document.querySelector('#geo').addEventListener('click', () => {
+      status.textContent = 'Requesting location…';
+      if (!navigator.geolocation) {
+        showWeather({ name: 'Seoul (fallback)', latitude: 37.57, longitude: 126.98 });
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        position => showWeather({ name: 'Your location', latitude: position.coords.latitude, longitude: position.coords.longitude }),
+        () => showWeather({ name: 'Seoul (fallback)', latitude: 37.57, longitude: 126.98 }),
+        { timeout: 8000 }
+      );
+    });
+
+    showWeather({ name: 'Seoul', country: 'South Korea', latitude: 37.57, longitude: 126.98 });
+  </script>
+</body>
+</html>
